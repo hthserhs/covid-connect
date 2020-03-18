@@ -1,19 +1,26 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Home from './components/Home';
+import Record from './components/Record';
+import Verify from './components/Verify';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{}}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Record"
+          component={Record}
+          options={{ title: 'Record Current Symptoms' }}
+        />
+        <Stack.Screen name="Verify" component={Verify} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
