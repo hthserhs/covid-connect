@@ -11,7 +11,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{}}>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ header: () => null }}
+        />
         <Stack.Screen
           name="Record"
           component={Record}

@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, Image, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 const Home = ({ navigation }) => {
   return (
@@ -7,17 +15,31 @@ const Home = ({ navigation }) => {
       <View style={styles.imageContainer}>
         <Image source={require('../assets/doc.png')} style={styles.image} />
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder="10 digit number"
-        textContentType="telephoneNumber"
-        keyboardType="phone-pad"
-      />
+      <Text style={styles.text}>Be safe. Stay safe.</Text>
+      <Text style={styles.subText}>
+        Record your symptoms and be notified of recommendations from your
+        healthcare providers.
+      </Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="10 digit mobile number"
+          textContentType="telephoneNumber"
+          keyboardType="phone-pad"
+        />
+        <FontAwesome
+          name="mobile-phone"
+          size={30}
+          style={styles.inputFieldIcon}
+        />
+      </View>
       <View style={styles.buttonContainer}>
-        <Button
-          title="Request OTP"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate('Verify')}
-        ></Button>
+        >
+          <Text style={styles.buttonText}>Request OTP</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -29,23 +51,57 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   imageContainer: {
-    marginVertical: 72
+    marginTop: 144
   },
   image: {
     width: 128,
     height: 128
   },
+  text: {
+    color: '#393939',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 12
+  },
+  subText: {
+    color: '#979797',
+    fontSize: 12,
+    lineHeight: 14,
+    fontWeight: 'normal',
+    paddingHorizontal: '12%',
+    marginTop: 12,
+    textAlign: 'center'
+  },
+  inputContainer: {
+    marginTop: 76,
+    width: '75%'
+  },
+  inputFieldIcon: {
+    backgroundColor: '#ebebeb',
+    position: 'absolute',
+    top: 9,
+    left: 18
+  },
   input: {
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 12,
-    minWidth: 240,
     textAlign: 'center',
     fontSize: 18,
-    padding: 6
+    backgroundColor: '#ebebeb',
+    height: 48
   },
   buttonContainer: {
-    minWidth: 180
+    width: '75%',
+    marginTop: 12
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00AEEF',
+    height: 48
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18
   }
 });
 
