@@ -1,15 +1,12 @@
-import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import Button from './common/Button';
 
 const Home = ({ navigation }) => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const disabled = !/^\d{10}$/.test(phoneNumber);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -26,6 +23,9 @@ const Home = ({ navigation }) => {
           placeholder="10 digit mobile number"
           textContentType="telephoneNumber"
           keyboardType="phone-pad"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          autoFocus={true}
         />
         <FontAwesome
           name="mobile-phone"
@@ -34,12 +34,11 @@ const Home = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
+        <Button
+          text="Request OTP"
           onPress={() => navigation.navigate('Verify')}
-        >
-          <Text style={styles.buttonText}>Request OTP</Text>
-        </TouchableOpacity>
+          disabled={disabled}
+        />
       </View>
     </View>
   );
@@ -48,7 +47,8 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
   },
   imageContainer: {
     marginTop: 144
@@ -84,24 +84,13 @@ const styles = StyleSheet.create({
   },
   input: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 21,
     backgroundColor: '#ebebeb',
     height: 48
   },
   buttonContainer: {
     width: '75%',
     marginTop: 12
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#00AEEF',
-    height: 48
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 18
   }
 });
 

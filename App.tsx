@@ -21,7 +21,11 @@ function App() {
           component={Record}
           options={{ title: 'Record Current Symptoms' }}
         />
-        <Stack.Screen name="Verify" component={Verify} />
+        <Stack.Screen
+          name="Verify"
+          component={Verify}
+          options={{ title: '' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
