@@ -18,7 +18,7 @@ const Verify = ({ navigation }) => {
         <Button
           text="Submit"
           disabled={disabled}
-          onPress={() => navigation.navigate('Record')}
+          onPress={() => navigation.navigate('Home')}
         />
       </View>
       <Text style={styles.subTextOtp}>
@@ -31,7 +31,7 @@ const Verify = ({ navigation }) => {
       <View style={styles.buttonOutlineContainer}>
         <Button
           text="Change Mobile Number"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Login')}
           outline={true}
         />
       </View>
@@ -49,8 +49,7 @@ const styles = StyleSheet.create({
     color: '#393939',
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 180,
-    textTransform: 'uppercase'
+    marginTop: 180
   },
   subText: {
     color: '#979797',

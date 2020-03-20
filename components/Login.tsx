@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import Button from './common/Button';
 
-const Home = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const disabled = !/^\d{10}$/.test(phoneNumber);
 
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Login;

@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import Home from './components/Home';
-import Record from './components/Record';
+import BottomTabNavigator from './components/BottomTabNavigator';
+import Login from './components/Login';
 import Verify from './components/Verify';
 
 const Stack = createStackNavigator();
@@ -10,16 +10,16 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{}}>
+      <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Login"
+          component={Login}
           options={{ header: () => null }}
         />
         <Stack.Screen
-          name="Record"
-          component={Record}
-          options={{ title: 'Record Current Symptoms' }}
+          name="Home"
+          component={BottomTabNavigator}
+          options={{ title: '' }}
         />
         <Stack.Screen
           name="Verify"

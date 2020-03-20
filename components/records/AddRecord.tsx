@@ -12,7 +12,7 @@ const Symptom = ({ name }) => {
   );
 };
 
-const Record = () => {
+const AddRecord = () => {
   return (
     <View style={styles.container}>
       <Symptom name="Fever" />
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Record;
+export default AddRecord;

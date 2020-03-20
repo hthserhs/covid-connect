@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface Props {
   text: string;
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgb(0, 174, 239)',
-    height: 48
+    height: 48,
+    borderRadius: 3
   },
   buttonDisabled: {
     backgroundColor: 'rgb(230, 230, 230)',
