@@ -1,15 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import Alerts from './Alerts';
+import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
-import Profile from './profile/Profile';
-import Records from './records/Records';
+import ProfileNavigator from './profile/ProfileNavigator';
+import RecordsNavigator from './records/RecordsNavigator';
 
-const INITIAL_ROUTE_NAME = 'Records';
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const BottomTabNavigator = ({ navigation, route }) => {
-  navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+const BottomTabNavigator = ({ navigation }) => {
+  navigation.setOptions({
+    header: () => null
+  });
 
   return (
     <Navigator
@@ -19,7 +20,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
     >
       <Screen
         name="Records"
-        component={Records}
+        component={RecordsNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-folder" />
@@ -28,7 +29,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
       />
       <Screen
         name="Alerts"
-        component={Alerts}
+        component={AlertsNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-alert" />
@@ -37,7 +38,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
       />
       <Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
@@ -47,19 +48,5 @@ const BottomTabNavigator = ({ navigation, route }) => {
     </Navigator>
   );
 };
-
-function getHeaderTitle(route) {
-  const routeName =
-    route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-  switch (routeName) {
-    case 'Records':
-      return 'My Records';
-    case 'Alerts':
-      return 'Alerts';
-    case 'Profile':
-      return 'Profile';
-  }
-}
 
 export default BottomTabNavigator;

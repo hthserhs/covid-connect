@@ -105,7 +105,8 @@ export default EditProfile;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   },
   container: {
     paddingHorizontal: 24

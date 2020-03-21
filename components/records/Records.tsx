@@ -1,47 +1,47 @@
-import React from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { FAB } from 'react-native-paper';
 import { getRandomRecords } from '../../util/mock';
-import Label from '../common/Label';
-import Meter from '../common/Meter';
+import RecordTile from './RecordTile';
 
-function Item({ record }) {
-  const { date, symptoms } = record;
-  let risk = symptoms.reduce((acc, s) => acc + s.level, 0);
-  risk = Math.min(risk, 5);
+const FabActions = ({ navigation }) => {
+  const [open, setOpen] = useState(false);
 
   return (
-    <View style={styles.itemContainer}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Meter max={5} current={risk} size={12} />
-        <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 6 }}>
-        {symptoms.map(({ name, level }, index) => (
-          <View key={index} style={{ marginRight: 6 }}>
-            <Label text={name} current={level} levels={3} />
-          </View>
-        ))}
-      </View>
-    </View>
+    <FAB.Group
+      fabStyle={styles.fab}
+      open={open}
+      visible={true}
+      icon={'plus'}
+      color="#fff"
+      actions={[
+        {
+          icon: 'file-plus',
+          label: 'Add Health Record',
+          onPress: () => navigation.navigate('AddHealthRecord')
+        },
+        {
+          icon: 'train-car',
+          label: 'Add Travel Record',
+          onPress: () => navigation.navigate('AddTravelRecord')
+        }
+      ]}
+      onStateChange={({ open }) => setOpen(open)}
+    />
   );
-}
+};
 
-const Records = () => {
+const Records = ({ navigation }) => {
   const data = getRandomRecords();
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={data}
-        renderItem={({ item }) => <Item record={item} />}
+        renderItem={({ item }) => <RecordTile record={item} />}
         keyExtractor={item => item.id}
       />
+      <FabActions navigation={navigation} />
     </SafeAreaView>
   );
 };
@@ -52,14 +52,8 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#fff'
   },
-  itemContainer: {
-    paddingHorizontal: 12,
-    paddingVertical: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
-  },
-  date: {
-    color: '#979797'
+  fab: {
+    backgroundColor: 'rgb(0, 174, 239)'
   }
 });
 

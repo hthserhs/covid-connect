@@ -1,17 +1,23 @@
 import { color } from 'd3-color';
 import { interpolateHslLong, quantize } from 'd3-interpolate';
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-const Label = ({ text, levels = 10, current, range = ['yellow', 'red'] }) => {
-  const [from, to] = range;
-  const colors = quantize(interpolateHslLong(from, to), levels);
+interface Props {
+  text: string;
+  current: number;
+  levels?: number;
+  levelColors?: string[];
+}
+
+const Label: FC<Props> = ({ text, levels = 10, current, levelColors }) => {
+  const colors =
+    levelColors || quantize(interpolateHslLong('yellow', 'red'), levels);
 
   const backgroundColor = color(colors[current - 1]);
-  backgroundColor.opacity = 0.2;
+  backgroundColor.opacity = 0.1;
 
   const borderColor = color(colors[current - 1]);
-  borderColor.opacity = 0.5;
 
   const style = {
     ...styles.base,
@@ -26,11 +32,10 @@ export default Label;
 
 const styles = StyleSheet.create({
   base: {
-    // borderColor: '#aaa',
     borderWidth: 1,
     borderRadius: 12,
     paddingHorizontal: 9,
-    paddingVertical: 1.5
+    paddingVertical: 1.5,
+    fontWeight: 'bold'
   }
 });
-//
