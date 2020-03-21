@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Alerts from './Alerts';
 import TabBarIcon from './common/TabBarIcon';
-import Profile from './Profile';
+import Profile from './profile/Profile';
 import Records from './records/Records';
 
 const INITIAL_ROUTE_NAME = 'Records';

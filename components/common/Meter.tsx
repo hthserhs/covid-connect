@@ -22,6 +22,7 @@ const Meter = ({ max, current, size = 10, vertical = false }) => {
         .map((_, i) => {
           return (
             <Text
+              key={i}
               style={{
                 color: i < current ? colors[i] : COLOR_DEFAULT,
                 letterSpacing: 1,

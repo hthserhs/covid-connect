@@ -22,8 +22,8 @@ function Item({ record }) {
         <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
       </View>
       <View style={{ flexDirection: 'row', marginTop: 6 }}>
-        {symptoms.map(({ name, level }) => (
-          <View style={{ marginRight: 6 }}>
+        {symptoms.map(({ name, level }, index) => (
+          <View key={index} style={{ marginRight: 6 }}>
             <Label text={name} current={level} levels={3} />
           </View>
         ))}
