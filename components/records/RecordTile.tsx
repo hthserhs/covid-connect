@@ -5,12 +5,14 @@ import Label from '../common/Label';
 
 const RECORD_ICONS = {
   health: 'thermometer',
-  travel: 'airplane'
+  travel: 'airplane',
+  location: 'map-marker'
 };
 
 const RECORD_ICON_COLORS = {
   health: 'rgb(0, 174, 239)',
-  travel: 'rgb(0, 174, 239)'
+  travel: 'rgb(0, 174, 239)',
+  location: 'rgb(0, 174, 239)'
 };
 
 const LEVEL_COLORS = ['#FFD600', '#FF9900', '#FF0000'];
@@ -64,8 +66,6 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingHorizontal: 12,
     paddingVertical: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
     flexDirection: 'row',
     alignItems: 'center'
   },

@@ -16,12 +16,12 @@ const FabActions = ({ navigation }) => {
       color="#fff"
       actions={[
         {
-          icon: 'file-plus',
+          icon: 'thermometer',
           label: 'Add Health Record',
           onPress: () => navigation.navigate('AddHealthRecord')
         },
         {
-          icon: 'train-car',
+          icon: 'airplane',
           label: 'Add Travel Record',
           onPress: () => navigation.navigate('AddTravelRecord')
         }

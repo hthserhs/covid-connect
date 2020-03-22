@@ -1,8 +1,6 @@
 import nanoid from 'nanoid/non-secure';
+import { SYMPTOMS, WEEK } from '../constants/app';
 import { randomIntegerInRange, sampleSize } from './util';
-
-const WEEK = 7 * 24 * 60 * 60 * 1000;
-const SYMPTOMS = ['Fever', 'Fatigue', 'Dry Cough', 'Dyspnea', 'Myalgia'];
 
 export function getRandomRecords() {
   const numItems = randomIntegerInRange(2, 6);
@@ -19,7 +17,7 @@ export function getRandomRecords() {
           level: randomIntegerInRange(1, 3)
         }))
         .sort((a, b) => b.level - a.level),
-      type: sampleSize(['travel', 'health'])[0]
+      type: sampleSize(['travel', 'health', 'location'])[0]
     }))
     .sort((a, b) => b.date - a.date);
 }

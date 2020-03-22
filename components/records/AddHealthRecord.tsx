@@ -1,13 +1,37 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Switch, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { SYMPTOMS } from '../../constants/app';
+import Button from '../common/Button';
+import Severity from '../common/Severity';
+
+const levels = [
+  {
+    text: 'No',
+    color: '#00C000'
+  },
+  {
+    text: 'Low',
+    color: '#FFD600'
+  },
+  {
+    text: 'Mild',
+    color: '#FF9900'
+  },
+  {
+    text: 'High',
+    color: '#FF0000'
+  }
+];
 
 const Symptom = ({ name }) => {
-  const [value, setValue] = useState(false);
+  const [value, setValue] = useState(-1);
 
   return (
-    <View style={styles.symptom}>
-      <Text style={{ fontSize: 18 }}>{name}</Text>
-      <Switch value={value} onValueChange={setValue}></Switch>
+    <View style={{ alignItems: 'center', marginTop: 24 }}>
+      <Text style={{ fontSize: 21, marginBottom: 12, fontWeight: 'bold' }}>
+        {name}
+      </Text>
+      <Severity levels={levels} selected={value} onSelected={setValue} />
     </View>
   );
 };
@@ -15,37 +39,19 @@ const Symptom = ({ name }) => {
 const AddHealthRecord = () => {
   return (
     <View style={styles.container}>
-      <Symptom name="Fever" />
-      <Symptom name="Dry cough" />
-      <Symptom name="Cold" />
-      <Symptom name="Tiredness" />
-      <Symptom name="Difficulty in breathing" />
-      <Symptom name="Pain in joints" />
-      <View style={styles.buttonContainer}>
-        <Button title="Submit" onPress={console.log}></Button>
-      </View>
+      <FlatList
+        data={SYMPTOMS}
+        renderItem={({ item }) => <Symptom name={item} />}
+        keyExtractor={(name, index) => String(index)}
+      />
+      <Button text="Submit" onPress={console.log} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  symptom: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc'
-  },
-  buttonContainer: {
-    minWidth: 180,
-    marginTop: 24
+    flex: 1
   }
 });
 
