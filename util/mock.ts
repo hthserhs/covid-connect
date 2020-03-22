@@ -18,6 +18,5 @@ export function getRandomRecords() {
         }))
         .sort((a, b) => b.level - a.level),
       type: sampleSize(['travel', 'health', 'location'])[0]
-    }))
-    .sort((a, b) => b.date - a.date);
+    }));
 }

@@ -8,7 +8,20 @@ i18n.translations = {
     gender: 'Gender',
     dob: 'Date of Birth',
     pincode: 'Current Pincode',
-    saveProfile: 'Save Profile'
+    saveProfile: 'Save Profile',
+    date: 'Date',
+    time: 'Time',
+    fromLocation: 'From Location',
+    toLocation: 'To Location',
+    fromAirport: 'From Airport',
+    toAirport: 'To Airport',
+    fromStation: 'From Station',
+    toStation: 'To Station',
+    mode: 'Transport Mode',
+    flightNumber: 'Flight Number',
+    trainNumber: 'Train Number',
+    busNumber: 'Bus Number',
+    transportId: 'Transport Details'
   },
   'ta-IN': {
     firstName: 'முதல் பெயர்',

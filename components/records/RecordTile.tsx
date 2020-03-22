@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Record } from '../../store/types';
 import Label from '../common/Label';
 
 const RECORD_ICONS = {
@@ -18,7 +19,11 @@ const RECORD_ICON_COLORS = {
 const LEVEL_COLORS = ['#FFD600', '#FF9900', '#FF0000'];
 const RISK_COLORS = ['#00C000', '#1FDD1F', '#FFD600', '#FF9900', '#FF0000'];
 
-export default function RecordTile({ record }) {
+interface Props {
+  record: Record;
+}
+
+const RecordTile: FC<Props> = ({ record }) => {
   const { date, symptoms, type } = record;
   let risk = symptoms.reduce((acc, s) => acc + s.level, 0);
   risk = Math.min(risk, 5);
@@ -43,11 +48,10 @@ export default function RecordTile({ record }) {
           }}
         >
           <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
-          {/* <Meter max={5} current={risk} size={12} /> */}
         </View>
-        <View style={{ flexDirection: 'row', marginTop: 6 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {symptoms.map(({ name, level }, index) => (
-            <View key={index} style={{ marginRight: 6 }}>
+            <View key={index} style={{ marginRight: 6, marginTop: 6 }}>
               <Label
                 text={name}
                 current={level}
@@ -60,7 +64,9 @@ export default function RecordTile({ record }) {
       </View>
     </View>
   );
-}
+};
+
+export default RecordTile;
 
 const styles = StyleSheet.create({
   itemContainer: {

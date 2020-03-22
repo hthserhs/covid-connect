@@ -1,12 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { FC, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import OTPDigit from './OtpDigit';
 
 const initialOTPState = [true, false, false, false].map(focus => ({
   focus,
   value: -1
 }));
 
-const OTP = ({ onOtp }) => {
+interface Props {
+  onOtp: (otp: number[]) => void;
+}
+
+const OTP: FC<Props> = ({ onOtp }) => {
   const [state, setState] = useState(initialOTPState);
 
   return (
@@ -58,49 +63,12 @@ const OTP = ({ onOtp }) => {
   );
 };
 
-const OTPDigit = ({ focus, onBlur, onValue }) => {
-  const ref = useRef(null);
-  const [value, setValue] = useState('');
-
-  const onChangeText = (val: string) => {
-    if (Number.isInteger(+val)) {
-      setValue(val);
-      onValue(val.length === 0 ? -1 : +val);
-    }
-  };
-
-  useEffect(() => {
-    if (focus) {
-      ref.current.focus();
-    }
-  }, [focus]);
-
-  return (
-    <TextInput
-      style={styles.input}
-      ref={ref}
-      keyboardType="numeric"
-      value={value}
-      onChangeText={onChangeText}
-      onBlur={onBlur}
-      maxLength={1}
-    />
-  );
-};
-
 const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 76,
     width: '75%',
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-  input: {
-    textAlign: 'center',
-    fontSize: 21,
-    backgroundColor: '#ebebeb',
-    height: 48,
-    width: '22%'
   }
 });
 

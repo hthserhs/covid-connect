@@ -1,21 +1,31 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle
+} from 'react-native';
 
 interface Props {
   text: string;
   onPress: () => void;
   disabled?: boolean;
   outline?: boolean;
+  customBtnStyle?: ViewStyle;
+  customTxtStyle?: TextStyle;
 }
 
 const Button: FC<Props> = ({
   text,
   onPress,
   disabled = false,
-  outline = false
+  outline = false,
+  customBtnStyle,
+  customTxtStyle
 }) => {
-  let btnStyle = styles.button;
-  let txtStyle = styles.buttonText;
+  let btnStyle = { ...styles.button, ...customBtnStyle };
+  let txtStyle = { ...styles.buttonText, ...customTxtStyle };
 
   if (outline) {
     btnStyle = { ...btnStyle, ...styles.buttonOutline };
@@ -44,8 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgb(0, 174, 239)',
-    height: 48,
-    borderRadius: 3
+    height: 48
   },
   buttonDisabled: {
     backgroundColor: 'rgb(230, 230, 230)',

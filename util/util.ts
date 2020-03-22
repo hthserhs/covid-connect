@@ -1,4 +1,4 @@
-export const randomIntegerInRange = (min, max) =>
+export const randomIntegerInRange = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 export const sampleSize = ([...arr], n = 1) => {

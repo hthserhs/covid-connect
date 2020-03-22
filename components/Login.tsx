@@ -1,9 +1,20 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { FC, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { AppNavigatorParamList } from '../App';
 import Button from './common/Button';
 
-const Login = ({ navigation }) => {
+type BottomTabScreenNavigationProp = StackNavigationProp<
+  AppNavigatorParamList,
+  'Login'
+>;
+
+interface Props {
+  navigation: BottomTabScreenNavigationProp;
+}
+
+const Login: FC<Props> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const disabled = !/^\d{10}$/.test(phoneNumber);
 

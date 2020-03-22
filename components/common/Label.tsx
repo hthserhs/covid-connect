@@ -32,10 +32,11 @@ export default Label;
 
 const styles = StyleSheet.create({
   base: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 9,
-    paddingVertical: 1.5,
-    fontWeight: 'bold'
+    borderWidth: 1.2,
+    borderRadius: 18,
+    paddingHorizontal: 18,
+    paddingVertical: 6,
+    fontWeight: 'bold',
+    color: '#3A4249'
   }
 });

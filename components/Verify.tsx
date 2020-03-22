@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { AppNavigatorParamList } from '../App';
 import Button from './common/Button';
-import OTP from './OTP';
+import OTP from './common/otp/OTP';
 
-const Verify = ({ navigation }) => {
+type BottomTabScreenNavigationProp = StackNavigationProp<
+  AppNavigatorParamList,
+  'Verify'
+>;
+
+interface Props {
+  navigation: BottomTabScreenNavigationProp;
+}
+
+const Verify: FC<Props> = ({ navigation }) => {
   const [otp, setOtp] = useState([]);
   const disabled = otp.length !== 4;
 

@@ -1,38 +1,23 @@
-import React, { useState } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { FC, useContext } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import { FAB } from 'react-native-paper';
-import { getRandomRecords } from '../../util/mock';
+import { StoreState } from '../../store/context';
+import FabActions from './FabActions';
+import { RecordsNavigatorParamList } from './RecordsNavigator';
 import RecordTile from './RecordTile';
 
-const FabActions = ({ navigation }) => {
-  const [open, setOpen] = useState(false);
+export type RecordsScreenNavigationProp = StackNavigationProp<
+  RecordsNavigatorParamList,
+  'RecordList'
+>;
 
-  return (
-    <FAB.Group
-      fabStyle={styles.fab}
-      open={open}
-      visible={true}
-      icon={'plus'}
-      color="#fff"
-      actions={[
-        {
-          icon: 'thermometer',
-          label: 'Add Health Record',
-          onPress: () => navigation.navigate('AddHealthRecord')
-        },
-        {
-          icon: 'airplane',
-          label: 'Add Travel Record',
-          onPress: () => navigation.navigate('AddTravelRecord')
-        }
-      ]}
-      onStateChange={({ open }) => setOpen(open)}
-    />
-  );
-};
+interface Props {
+  navigation: RecordsScreenNavigationProp;
+}
 
-const Records = ({ navigation }) => {
-  const data = getRandomRecords();
+const Records: FC<Props> = ({ navigation }) => {
+  const { records } = useContext(StoreState);
+  const data = records.sort((a, b) => b.date - a.date);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,9 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     backgroundColor: '#fff'
-  },
-  fab: {
-    backgroundColor: 'rgb(0, 174, 239)'
   }
 });
 

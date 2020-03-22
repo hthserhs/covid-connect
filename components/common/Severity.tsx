@@ -1,11 +1,18 @@
 import { color } from 'd3-color';
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SeverityLevel } from '../../store/types';
 
 const BORDER_RADIUS = 30;
 
-const Severity = ({ levels, selected = -1, onSelected }) => {
+interface Props {
+  levels: SeverityLevel[];
+  onSelected: (index: number) => void;
+  selected?: number;
+}
+
+const Severity: FC<Props> = ({ levels, selected = -1, onSelected }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {levels.map(({ text, color: c }, index) => {
@@ -20,7 +27,7 @@ const Severity = ({ levels, selected = -1, onSelected }) => {
             <View
               style={{
                 backgroundColor: bgColor.toString(),
-                paddingVertical: 18,
+                paddingVertical: 12,
                 paddingHorizontal: 30,
                 borderTopLeftRadius: index === 0 ? BORDER_RADIUS : 0,
                 borderBottomLeftRadius: index === 0 ? BORDER_RADIUS : 0,

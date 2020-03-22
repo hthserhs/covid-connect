@@ -6,7 +6,14 @@ import AddTravelRecord from './AddTravelRecord';
 import RecordDetails from './RecordDetails';
 import Records from './Records';
 
-const Stack = createStackNavigator();
+export type RecordsNavigatorParamList = {
+  RecordList: undefined;
+  AddHealthRecord: undefined;
+  AddTravelRecord: undefined;
+  RecordDetails: undefined;
+};
+
+const Stack = createStackNavigator<RecordsNavigatorParamList>();
 
 const RecordsNavigator = () => {
   return (
@@ -24,7 +31,7 @@ const RecordsNavigator = () => {
       <Stack.Screen
         name="AddTravelRecord"
         component={AddTravelRecord}
-        options={{ title: 'Add Travel Record' }}
+        options={{ title: 'Add Travel History' }}
       />
       <Stack.Screen
         name="RecordDetails"

@@ -1,13 +1,32 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { FC } from 'react';
+import { AppNavigatorParamList } from '../App';
 import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
 import ProfileNavigator from './profile/ProfileNavigator';
 import RecordsNavigator from './records/RecordsNavigator';
 
-const { Navigator, Screen } = createBottomTabNavigator();
+export type BottomTabNavigatorParamList = {
+  Records: undefined;
+  Alerts: undefined;
+  Profile: undefined;
+};
 
-const BottomTabNavigator = ({ navigation }) => {
+const { Navigator, Screen } = createBottomTabNavigator<
+  BottomTabNavigatorParamList
+>();
+
+type BottomTabScreenNavigationProp = StackNavigationProp<
+  AppNavigatorParamList,
+  'Home'
+>;
+
+interface Props {
+  navigation: BottomTabScreenNavigationProp;
+}
+
+const BottomTabNavigator: FC<Props> = ({ navigation }) => {
   navigation.setOptions({
     header: () => null
   });
