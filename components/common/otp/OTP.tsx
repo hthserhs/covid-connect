@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import OTPDigit from './OtpDigit';
+import OTPDigit from './OTPDigit';
 
 const initialOTPState = [true, false, false, false].map(focus => ({
   focus,
