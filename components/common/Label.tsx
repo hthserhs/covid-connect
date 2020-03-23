@@ -14,10 +14,10 @@ const Label: FC<Props> = ({ text, levels = 10, current, levelColors }) => {
   const colors =
     levelColors || quantize(interpolateHslLong('yellow', 'red'), levels);
 
-  const backgroundColor = color(colors[current - 1]);
+  const backgroundColor = color(colors[current]);
   backgroundColor.opacity = 0.1;
 
-  const borderColor = color(colors[current - 1]);
+  const borderColor = color(colors[current]);
 
   const style = {
     ...styles.base,

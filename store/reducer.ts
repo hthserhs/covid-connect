@@ -8,6 +8,11 @@ export function reducer(state: State, action: Action) {
         ...state,
         records: [...state.records, action.payload.record]
       };
+    case 'add_travel_record':
+      return {
+        ...state,
+        travalRecords: [...state.travelRecords, action.payload.record]
+      };
     default:
       throw new Error();
   }

@@ -1,5 +1,5 @@
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Platform,
   ScrollView,
@@ -9,25 +9,19 @@ import {
   View
 } from 'react-native';
 import { Snackbar } from 'react-native-paper';
+import {
+  LABELS_TRANSPORT_FROM,
+  LABELS_TRANSPORT_ID,
+  LABELS_TRANSPORT_TO,
+  TRANSPORT_MODE_RADIO_ITEMS
+} from '../../constants/app';
+import { addTravelRecord } from '../../store/actions';
+import { StoreDispatch } from '../../store/context';
+import { TransportMode } from '../../store/types';
 import { t } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
-
-const travelModes = ['Flight', 'Train', 'Bus', 'Other'];
-const labelsFromLocation = [
-  'fromAirport',
-  'fromStation',
-  'fromLocation',
-  'fromLocation'
-];
-const labelsToLocation = ['toAirport', 'toStation', 'toLocation', 'toLocation'];
-const labelsTransportId = [
-  'flightNumber',
-  'trainNumber',
-  'busNumber',
-  'transportId'
-];
 
 const AddTravelRecord = () => {
   const [date, setDate] = useState(new Date());
@@ -35,8 +29,9 @@ const AddTravelRecord = () => {
   const [fromLocation, setFromLocation] = useState('');
   const [toLocation, setToLocation] = useState('');
   const [transportId, setTransportId] = useState('');
-  const [selectedMode, setSelectedMode] = useState(0);
+  const [transportMode, setTransportMode] = useState(TransportMode.Flight);
   const [alert, setAlert] = useState(null);
+  const dispatch = useContext(StoreDispatch);
 
   const disabled = !date || !fromLocation || !toLocation || !transportId;
 
@@ -46,16 +41,23 @@ const AddTravelRecord = () => {
     setDate(currentDate);
   };
 
-  const onToggleMode = (index: number) => {
-    setSelectedMode(selectedMode === index ? -1 : index);
-  };
-
   const onAddRecord = () => {
     setDate(new Date());
     setFromLocation('');
     setToLocation('');
     setTransportId('');
-    setSelectedMode(0);
+    setTransportMode(TransportMode.Flight);
+
+    dispatch(
+      addTravelRecord(
+        Date.now(),
+        fromLocation,
+        toLocation,
+        transportMode,
+        transportId
+      )
+    );
+
     setAlert('Travel history added!');
   };
 
@@ -64,9 +66,9 @@ const AddTravelRecord = () => {
       <ScrollView style={styles.scrollView}>
         <View style={{ alignSelf: 'center', marginTop: 24 }}>
           <Radio
-            items={travelModes}
-            selected={selectedMode}
-            onToggle={onToggleMode}
+            items={TRANSPORT_MODE_RADIO_ITEMS}
+            value={transportMode}
+            onValue={setTransportMode}
           />
         </View>
         <View style={styles.field}>
@@ -87,17 +89,17 @@ const AddTravelRecord = () => {
         <Input
           value={fromLocation}
           onChangeValue={setFromLocation}
-          labelKey={labelsFromLocation[selectedMode]}
+          labelKey={LABELS_TRANSPORT_FROM[transportMode]}
         />
         <Input
           value={toLocation}
           onChangeValue={setToLocation}
-          labelKey={labelsToLocation[selectedMode]}
+          labelKey={LABELS_TRANSPORT_TO[transportMode]}
         />
         <Input
           value={transportId}
           onChangeValue={setTransportId}
-          labelKey={labelsTransportId[selectedMode]}
+          labelKey={LABELS_TRANSPORT_ID[transportMode]}
         />
       </ScrollView>
       <Snackbar

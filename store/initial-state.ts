@@ -1,6 +1,7 @@
-import { getRandomRecords } from '../util/mock';
+import { getRandomHealthRecords, getRandomTravelRecords } from '../util/mock';
 import { State } from './types';
 
 export default {
-  records: getRandomRecords()
+  records: getRandomHealthRecords(),
+  travelRecords: getRandomTravelRecords()
 } as State;

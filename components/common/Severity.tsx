@@ -2,27 +2,27 @@ import { color } from 'd3-color';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SeverityLevel } from '../../store/types';
+import { SeverityLevelItem } from '../../store/types';
 
 const BORDER_RADIUS = 30;
 
 interface Props {
-  levels: SeverityLevel[];
-  onSelected: (index: number) => void;
-  selected?: number;
+  levels: SeverityLevelItem[];
+  current: number; // -1 if nothing selected
+  onChange: (index: number) => void;
 }
 
-const Severity: FC<Props> = ({ levels, selected = -1, onSelected }) => {
+const Severity: FC<Props> = ({ levels, current, onChange }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {levels.map(({ text, color: c }, index) => {
         const bgColor = color(c);
-        bgColor.opacity = index === selected ? 1 : 0.1;
+        bgColor.opacity = index === current ? 1 : 0.1;
 
         return (
           <TouchableOpacity
             key={index}
-            onPress={() => onSelected(selected === index ? -1 : index)}
+            onPress={() => onChange(current === index ? -1 : index)}
           >
             <View
               style={{

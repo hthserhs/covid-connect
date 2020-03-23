@@ -4,27 +4,29 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { SYMPTOMS } from '../../constants/app';
 import { StoreDispatch } from '../../store/context';
+import { SeverityLevel } from '../../store/types';
 import Button from '../common/Button';
 import Symptom from './Symptom';
 
 const AddHealthRecord = () => {
-  const [levels, setLevels] = useState(SYMPTOMS.map(_ => -1));
+  const [levels, setLevels] = useState(
+    SYMPTOMS.map(_ => SeverityLevel.Unspecified)
+  );
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(StoreDispatch);
 
-  const disabled = levels.every(l => l === -1);
+  const disabled = levels.every(l => l === SeverityLevel.Unspecified);
 
-  const onChangeLevel = (index: number, level: number) => {
+  const onChangeSeverityLevel = (index: number, level: SeverityLevel) => {
     setLevels([...levels.slice(0, index), level, ...levels.slice(index + 1)]);
   };
 
   const onAddRecord = () => {
-    const symptoms = levels
-      .map((level, i) => ({
-        name: SYMPTOMS[i],
-        level
-      }))
-      .filter(s => s.level > -1);
+    const symptoms = levels.map((level, i) => ({
+      name: SYMPTOMS[i],
+      level
+    }));
+
     dispatch({
       type: 'add_record',
       payload: {
@@ -36,7 +38,8 @@ const AddHealthRecord = () => {
         }
       }
     });
-    setLevels(SYMPTOMS.map(_ => -1));
+
+    setLevels(SYMPTOMS.map(_ => SeverityLevel.Unspecified));
     setAlert('Health record added!');
   };
 
@@ -48,7 +51,7 @@ const AddHealthRecord = () => {
           <Symptom
             name={item}
             level={levels[index]}
-            onChangeLevel={level => onChangeLevel(index, level)}
+            onChangeSeverityLevel={level => onChangeSeverityLevel(index, level)}
           />
         )}
         keyExtractor={(name, index) => String(index)}

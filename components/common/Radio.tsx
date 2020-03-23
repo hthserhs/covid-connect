@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,13 +10,20 @@ import {
 
 const BORDER_RADIUS = 3;
 
-interface Props {
-  items: string[];
-  selected: number;
-  onToggle: (index: number) => void;
+interface RadioItem<T> {
+  text: string;
+  value: T;
 }
 
-const Radio: FC<Props> = ({ items, onToggle, selected }) => {
+interface Props<T> {
+  items: RadioItem<T>[];
+  value: T;
+  onValue: (value: T) => void;
+}
+
+function Radio<T>(props: Props<T>) {
+  const { items, onValue, value } = props;
+
   return (
     <View style={{ flexDirection: 'row' }}>
       {items.map((item, index) => {
@@ -40,7 +47,7 @@ const Radio: FC<Props> = ({ items, onToggle, selected }) => {
           };
         }
 
-        if (index === selected) {
+        if (item.value === value) {
           btnStyle = {
             ...btnStyle,
             backgroundColor: 'rgb(0, 174, 239)'
@@ -52,14 +59,17 @@ const Radio: FC<Props> = ({ items, onToggle, selected }) => {
         }
 
         return (
-          <TouchableOpacity style={btnStyle} onPress={() => onToggle(index)}>
+          <TouchableOpacity
+            style={btnStyle}
+            onPress={() => onValue(item.value)}
+          >
             <Text style={txtStyle}>{item}</Text>
           </TouchableOpacity>
         );
       })}
     </View>
   );
-};
+}
 
 export default Radio;
 
