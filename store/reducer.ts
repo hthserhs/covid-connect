@@ -13,6 +13,11 @@ export function reducer(state: State, action: Action) {
         ...state,
         travalRecords: [...state.travelRecords, action.payload.record]
       };
+    case 'update_mobile_number':
+      return {
+        ...state,
+        mobileNumber: action.payload.mobileNumber
+      };
     default:
       throw new Error();
   }

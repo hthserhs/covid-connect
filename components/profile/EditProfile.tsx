@@ -1,19 +1,52 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { FC, useState } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { RadioButton, Snackbar } from 'react-native-paper';
+import { Snackbar } from 'react-native-paper';
 import { t } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import Radio from '../common/Radio';
+import { ProfileNavigatorParamList } from './ProfileNavigator';
 
 const DEFAULT_DATE = new Date('1996-01-01');
+const GENDER_RADIO_ITEMS = [
+  {
+    text: 'Male',
+    value: 'male'
+  },
+  {
+    text: 'Female',
+    value: 'female'
+  },
+  {
+    text: 'Other',
+    value: 'other'
+  }
+];
 
-const EditProfile = () => {
+export type EditProfileScreenNavigationProp = StackNavigationProp<
+  ProfileNavigatorParamList,
+  'EditProfile'
+>;
+
+interface Props {
+  navigation: EditProfileScreenNavigationProp;
+}
+
+const EditProfile: FC<Props> = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Date>(null);
   const [pincode, setPincode] = useState('');
 
   const [show, setShow] = useState(false);
@@ -22,6 +55,16 @@ const EditProfile = () => {
   const disabled = !firstName || !lastName || !gender || !date || !pincode;
 
   const onSubmit = () => {
+    const profile = {
+      firstName,
+      lastName,
+      gender,
+      dob: date.getTime(),
+      pincode
+    };
+
+    console.log(profile);
+
     setAlert('Profile saved!');
   };
 
@@ -33,6 +76,9 @@ const EditProfile = () => {
 
   return (
     <View style={styles.rootContainer}>
+      <View style={styles.imageContainer}>
+        <MaterialCommunityIcons name="account" size={72} color="#979797" />
+      </View>
       <View style={styles.container}>
         <Input
           value={firstName}
@@ -46,13 +92,13 @@ const EditProfile = () => {
         />
         <View style={styles.field}>
           <Text style={styles.label}>{t('gender')}</Text>
-          <RadioButton.Group onValueChange={setGender} value={gender}>
-            <View style={styles.radioGroupItems}>
-              <RadioButton.Item label="Male" value="male" />
-              <RadioButton.Item label="Female" value="female" />
-              <RadioButton.Item label="Other" value="other" />
-            </View>
-          </RadioButton.Group>
+          <View style={{ marginTop: 6 }}>
+            <Radio
+              items={GENDER_RADIO_ITEMS}
+              value={gender}
+              onValue={setGender}
+            />
+          </View>
         </View>
         <View style={styles.field}>
           <Text style={styles.label}>{t('dob')}</Text>
@@ -89,6 +135,18 @@ const EditProfile = () => {
             disabled={disabled}
           />
         </View>
+        <TouchableHighlight
+          style={{ alignItems: 'center', marginTop: 24 }}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text
+            style={{
+              color: '#00AEEF'
+            }}
+          >
+            Logout
+          </Text>
+        </TouchableHighlight>
       </View>
       <Snackbar
         visible={alert}
@@ -107,6 +165,10 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     backgroundColor: '#fff'
+  },
+  imageContainer: {
+    marginTop: 24,
+    alignItems: 'center'
   },
   container: {
     paddingHorizontal: 24

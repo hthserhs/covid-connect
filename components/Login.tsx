@@ -1,8 +1,12 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
+import { sendOtpToNumber } from '../api/account';
 import { AppNavigatorParamList } from '../App';
+import { updateMobileNumber } from '../store/actions';
+import { StoreDispatch, StoreState } from '../store/context';
 import Button from './common/Button';
 
 type BottomTabScreenNavigationProp = StackNavigationProp<
@@ -15,8 +19,29 @@ interface Props {
 }
 
 const Login: FC<Props> = ({ navigation }) => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const disabled = !/^\d{10}$/.test(phoneNumber);
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [alert, setAlert] = useState(null);
+  const disabled = !/^\d{10}$/.test(mobileNumber);
+  const dispatch = useContext(StoreDispatch);
+  const inputRef = useRef(null);
+  const { mobileNumber: mobNumber } = useContext(StoreState);
+
+  const onRequestOtp = () => {
+    dispatch(updateMobileNumber(mobileNumber));
+    sendOtpToNumber(mobileNumber)
+      .then(() => {
+        setAlert('OTP sent!');
+      })
+      .catch(() => {
+        setAlert('OTP could not be sent!');
+      });
+    navigation.navigate('Verify');
+  };
+
+  useEffect(() => {
+    inputRef.current.focus();
+    setMobileNumber(mobNumber);
+  }, [mobNumber]);
 
   return (
     <View style={styles.container}>
@@ -30,12 +55,13 @@ const Login: FC<Props> = ({ navigation }) => {
       </Text>
       <View style={styles.inputContainer}>
         <TextInput
+          ref={inputRef}
           style={styles.input}
           placeholder="10 digit mobile number"
           textContentType="telephoneNumber"
           keyboardType="phone-pad"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
+          value={mobileNumber}
+          onChangeText={setMobileNumber}
           autoFocus={true}
         />
         <FontAwesome
@@ -45,12 +71,15 @@ const Login: FC<Props> = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
-          text="Request OTP"
-          onPress={() => navigation.navigate('Verify')}
-          disabled={disabled}
-        />
+        <Button text="Request OTP" onPress={onRequestOtp} disabled={disabled} />
       </View>
+      <Snackbar
+        visible={alert}
+        onDismiss={() => setAlert(null)}
+        duration={3000}
+      >
+        {alert}
+      </Snackbar>
     </View>
   );
 };

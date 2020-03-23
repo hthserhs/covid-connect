@@ -2,10 +2,12 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import OTPDigit from './OTPDigit';
 
-const initialOTPState = [true, false, false, false].map(focus => ({
-  focus,
-  value: -1
-}));
+const initialOTPState = [true, false, false, false, false, false].map(
+  focus => ({
+    focus,
+    value: -1
+  })
+);
 
 interface Props {
   onOtp: (otp: number[]) => void;

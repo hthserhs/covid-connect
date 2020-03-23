@@ -1,7 +1,12 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Snackbar } from 'react-native-paper';
+import { sendOtpToNumber, validateOtp } from '../api/account';
 import { AppNavigatorParamList } from '../App';
+import { updateMobileNumber } from '../store/actions';
+import { StoreDispatch, StoreState } from '../store/context';
 import Button from './common/Button';
 import OTP from './common/otp/OTP';
 
@@ -16,7 +21,35 @@ interface Props {
 
 const Verify: FC<Props> = ({ navigation }) => {
   const [otp, setOtp] = useState([]);
-  const disabled = otp.length !== 4;
+  const { mobileNumber } = useContext(StoreState);
+  const dispatch = useContext(StoreDispatch);
+  const [alert, setAlert] = useState(null);
+  const disabled = otp.length !== 6;
+
+  const onResendOtp = () => {
+    sendOtpToNumber(mobileNumber)
+      .then(() => {
+        setAlert('OTP sent!');
+      })
+      .catch(() => {
+        setAlert('OTP could not be sent!');
+      });
+  };
+
+  const onChangeMobileNumber = () => {
+    dispatch(updateMobileNumber(''));
+    navigation.navigate('Login');
+  };
+
+  const onValidateOtp = () => {
+    validateOtp(mobileNumber, otp.join(''))
+      .then(() => {
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        setAlert('OTP validation failed!');
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -26,26 +59,29 @@ const Verify: FC<Props> = ({ navigation }) => {
       </Text>
       <OTP onOtp={setOtp} />
       <View style={styles.buttonContainer}>
-        <Button
-          text="Submit"
-          disabled={disabled}
-          onPress={() => navigation.navigate('Home')}
-        />
+        <Button text="Submit" disabled={disabled} onPress={onValidateOtp} />
       </View>
-      <Text style={styles.subTextOtp}>
-        Didn't receive OTP?{' '}
-        <Text style={{ color: '#00AEEF' }} onPress={console.log}>
-          Resend
-        </Text>
-        .
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={styles.subTextOtp}>Didn't receive OTP? </Text>
+        <TouchableOpacity onPress={onResendOtp}>
+          <Text style={{ ...styles.subTextOtp, color: '#00AEEF' }}>Resend</Text>
+        </TouchableOpacity>
+        <Text style={styles.subTextOtp}>.</Text>
+      </View>
       <View style={styles.buttonOutlineContainer}>
         <Button
           text="Change Mobile Number"
-          onPress={() => navigation.navigate('Login')}
+          onPress={onChangeMobileNumber}
           outline={true}
         />
       </View>
+      <Snackbar
+        visible={alert}
+        onDismiss={() => setAlert(null)}
+        duration={3000}
+      >
+        {alert}
+      </Snackbar>
     </View>
   );
 };
@@ -91,9 +127,7 @@ const styles = StyleSheet.create({
   subTextOtp: {
     color: '#979797',
     fontSize: 12,
-    lineHeight: 14,
     fontWeight: 'normal',
-    paddingHorizontal: '12%',
     marginTop: 24,
     textAlign: 'center'
   },

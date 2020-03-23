@@ -1,6 +1,7 @@
 export interface State {
   records: HealthRecord[];
   travelRecords: TravelRecord[];
+  mobileNumber: string;
 }
 
 export type RecordType = 'travel' | 'health';

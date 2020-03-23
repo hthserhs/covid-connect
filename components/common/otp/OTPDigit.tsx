@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     fontSize: 21,
     backgroundColor: '#ebebeb',
     height: 48,
-    width: '22%'
+    width: '14%'
   }
 });

@@ -3,5 +3,6 @@ import { State } from './types';
 
 export default {
   records: getRandomHealthRecords(),
-  travelRecords: getRandomTravelRecords()
+  travelRecords: getRandomTravelRecords(),
+  mobileNumber: ''
 } as State;

@@ -3,7 +3,12 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import EditProfile from './EditProfile';
 
-const Stack = createStackNavigator();
+export type ProfileNavigatorParamList = {
+  EditProfile: undefined;
+  Login: undefined;
+};
+
+const Stack = createStackNavigator<ProfileNavigatorParamList>();
 
 const ProfileNavigator = () => {
   return (

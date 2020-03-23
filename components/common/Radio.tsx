@@ -60,10 +60,11 @@ function Radio<T>(props: Props<T>) {
 
         return (
           <TouchableOpacity
+            key={index}
             style={btnStyle}
             onPress={() => onValue(item.value)}
           >
-            <Text style={txtStyle}>{item}</Text>
+            <Text style={txtStyle}>{item.text}</Text>
           </TouchableOpacity>
         );
       })}

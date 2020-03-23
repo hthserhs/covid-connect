@@ -15,6 +15,13 @@ export interface AddTravelRecord {
   };
 }
 
+export interface UpdateMobileNumber {
+  type: 'update_mobile_number';
+  payload: {
+    mobileNumber: string;
+  };
+}
+
 export function addTravelRecord(
   date: number,
   from: string,
@@ -38,4 +45,13 @@ export function addTravelRecord(
   };
 }
 
-export type Action = AddRecord | AddTravelRecord;
+export function updateMobileNumber(mobileNumber: string): UpdateMobileNumber {
+  return {
+    type: 'update_mobile_number',
+    payload: {
+      mobileNumber
+    }
+  };
+}
+
+export type Action = AddRecord | AddTravelRecord | UpdateMobileNumber;
