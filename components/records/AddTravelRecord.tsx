@@ -16,7 +16,7 @@ import {
   TRANSPORT_MODE_RADIO_ITEMS
 } from '../../constants/app';
 import { addTravelRecord } from '../../store/actions';
-import { StoreDispatch } from '../../store/context';
+import { AppDispatch } from '../../store/context';
 import { TransportMode } from '../../store/types';
 import { t } from '../../util/translation';
 import Button from '../common/Button';
@@ -31,7 +31,7 @@ const AddTravelRecord = () => {
   const [transportId, setTransportId] = useState('');
   const [transportMode, setTransportMode] = useState(TransportMode.Flight);
   const [alert, setAlert] = useState(null);
-  const dispatch = useContext(StoreDispatch);
+  const dispatch = useContext(AppDispatch);
 
   const disabled = !date || !fromLocation || !toLocation || !transportId;
 

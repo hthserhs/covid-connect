@@ -1,30 +1,30 @@
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
-import { AppNavigatorParamList } from '../App';
-import { updateMobileNumber } from '../store/actions';
-import { StoreDispatch, StoreState } from '../store/context';
+import { AUTH_TOKEN, IS_NEW_USER } from '../storage/keys';
+import { saveItem } from '../storage/storage';
+import {
+  setAuthToken,
+  setUserType,
+  updateMobileNumber,
+  updateUserProfile
+} from '../store/actions';
+import { AppDispatch, AppState } from '../store/context';
+import { UserType } from '../store/types';
 import Button from './common/Button';
-import OTP from './common/otp/OTP';
 
-type BottomTabScreenNavigationProp = StackNavigationProp<
-  AppNavigatorParamList,
-  'Verify'
->;
-
-interface Props {
-  navigation: BottomTabScreenNavigationProp;
-}
-
-const Verify: FC<Props> = ({ navigation }) => {
-  const [otp, setOtp] = useState([]);
-  const { mobileNumber } = useContext(StoreState);
-  const dispatch = useContext(StoreDispatch);
+const Verify = () => {
+  const navigation = useNavigation();
+  const [otp, setOtp] = useState('');
+  const { mobileNumber } = useContext(AppState);
+  const dispatch = useContext(AppDispatch);
   const [alert, setAlert] = useState(null);
-  const disabled = otp.length !== 6;
+  const inputRef = useRef(null);
+
+  const disabled = !/^\d{6}$/.test(otp);
 
   const onResendOtp = () => {
     sendOtpToNumber(mobileNumber)
@@ -42,14 +42,30 @@ const Verify: FC<Props> = ({ navigation }) => {
   };
 
   const onValidateOtp = () => {
-    validateOtp(mobileNumber, otp.join(''))
-      .then(() => {
-        navigation.navigate('Home');
+    validateOtp(mobileNumber, otp)
+      .then(response => {
+        return Promise.all([
+          saveItem(AUTH_TOKEN, response.authToken),
+          saveItem(IS_NEW_USER, response.isNewUser)
+        ]).then(() => response);
       })
-      .catch(error => {
+      .then(response => {
+        if (response.patient) {
+          dispatch(updateUserProfile(response.patient));
+        }
+        dispatch(setAuthToken(response.authToken));
+        dispatch(
+          setUserType(response.isNewUser ? UserType.New : UserType.Registered)
+        );
+      })
+      .catch(() => {
         setAlert('OTP validation failed!');
       });
   };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -57,7 +73,17 @@ const Verify: FC<Props> = ({ navigation }) => {
       <Text style={styles.subText}>
         Enter the one time password (OTP) sent to your mobile number.
       </Text>
-      <OTP onOtp={setOtp} />
+      <View style={styles.inputContainer}>
+        <TextInput
+          ref={inputRef}
+          style={styles.input}
+          placeholder="Enter 6 digit OTP"
+          keyboardType="numeric"
+          value={otp}
+          onChangeText={setOtp}
+          autoFocus={true}
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <Button text="Submit" disabled={disabled} onPress={onValidateOtp} />
       </View>
@@ -108,17 +134,14 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   inputContainer: {
-    marginTop: 76,
-    width: '75%',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    marginTop: 48,
+    width: '75%'
   },
   input: {
     textAlign: 'center',
     fontSize: 21,
     backgroundColor: '#ebebeb',
-    height: 48,
-    width: '22%'
+    height: 48
   },
   buttonContainer: {
     width: '75%',

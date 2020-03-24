@@ -1,5 +1,11 @@
 import nanoid from 'nanoid/non-secure';
-import { HealthRecord, TransportMode, TravelRecord } from './types';
+import {
+  HealthRecord,
+  TransportMode,
+  TravelRecord,
+  UserProfile,
+  UserType
+} from './types';
 
 export interface AddRecord {
   type: 'add_record';
@@ -19,6 +25,35 @@ export interface UpdateMobileNumber {
   type: 'update_mobile_number';
   payload: {
     mobileNumber: string;
+  };
+}
+
+export interface SetAuthToken {
+  type: 'set_auth_token';
+  payload: {
+    authToken: string;
+  };
+}
+
+export interface ClearAuthToken {
+  type: 'clear_auth_token';
+}
+
+export interface ClearUserData {
+  type: 'clear_user_data';
+}
+
+export interface SetUserType {
+  type: 'set_user_type';
+  payload: {
+    userType: UserType;
+  };
+}
+
+export interface UpdateUserProfile {
+  type: 'update_user_profile';
+  payload: {
+    userProfile: UserProfile;
   };
 }
 
@@ -54,4 +89,51 @@ export function updateMobileNumber(mobileNumber: string): UpdateMobileNumber {
   };
 }
 
-export type Action = AddRecord | AddTravelRecord | UpdateMobileNumber;
+export function setAuthToken(authToken: string): SetAuthToken {
+  return {
+    type: 'set_auth_token',
+    payload: {
+      authToken
+    }
+  };
+}
+
+export function clearAuthToken(): ClearAuthToken {
+  return {
+    type: 'clear_auth_token'
+  };
+}
+
+export function clearUserData(): ClearUserData {
+  return {
+    type: 'clear_user_data'
+  };
+}
+
+export function setUserType(userType: UserType): SetUserType {
+  return {
+    type: 'set_user_type',
+    payload: {
+      userType
+    }
+  };
+}
+
+export function updateUserProfile(userProfile: UserProfile): UpdateUserProfile {
+  return {
+    type: 'update_user_profile',
+    payload: {
+      userProfile
+    }
+  };
+}
+
+export type Action =
+  | AddRecord
+  | AddTravelRecord
+  | UpdateMobileNumber
+  | SetAuthToken
+  | ClearAuthToken
+  | ClearUserData
+  | SetUserType
+  | UpdateUserProfile;

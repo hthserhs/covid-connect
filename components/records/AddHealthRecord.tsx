@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { SYMPTOMS } from '../../constants/app';
-import { StoreDispatch } from '../../store/context';
+import { AppDispatch } from '../../store/context';
 import { SeverityLevel } from '../../store/types';
 import Button from '../common/Button';
 import Symptom from './Symptom';
@@ -13,7 +13,7 @@ const AddHealthRecord = () => {
     SYMPTOMS.map(_ => SeverityLevel.Unspecified)
   );
   const [alert, setAlert] = useState(null);
-  const dispatch = useContext(StoreDispatch);
+  const dispatch = useContext(AppDispatch);
 
   const disabled = levels.every(l => l === SeverityLevel.Unspecified);
 

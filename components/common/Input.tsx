@@ -9,9 +9,9 @@ import {
 import { t } from '../../util/translation';
 
 interface Props {
-  labelKey: string;
   value: string;
   onChangeValue: (value: string) => void;
+  labelKey?: string;
   keyboardType?: KeyboardTypeOptions;
 }
 
@@ -23,7 +23,7 @@ const Input: FC<Props> = ({
 }) => {
   return (
     <View style={styles.field}>
-      <Text style={styles.label}>{t(labelKey)}</Text>
+      {labelKey ? <Text style={styles.label}>{t(labelKey)}</Text> : null}
       <TextInput
         style={styles.input}
         value={value}

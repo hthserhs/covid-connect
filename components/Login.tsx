@@ -1,30 +1,21 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber } from '../api/account';
-import { AppNavigatorParamList } from '../App';
 import { updateMobileNumber } from '../store/actions';
-import { StoreDispatch, StoreState } from '../store/context';
+import { AppDispatch, AppState } from '../store/context';
 import Button from './common/Button';
 
-type BottomTabScreenNavigationProp = StackNavigationProp<
-  AppNavigatorParamList,
-  'Login'
->;
-
-interface Props {
-  navigation: BottomTabScreenNavigationProp;
-}
-
-const Login: FC<Props> = ({ navigation }) => {
+const Login = () => {
+  const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [alert, setAlert] = useState(null);
   const disabled = !/^\d{10}$/.test(mobileNumber);
-  const dispatch = useContext(StoreDispatch);
+  const dispatch = useContext(AppDispatch);
   const inputRef = useRef(null);
-  const { mobileNumber: mobNumber } = useContext(StoreState);
+  const { mobileNumber: mobNumber } = useContext(AppState);
 
   const onRequestOtp = () => {
     dispatch(updateMobileNumber(mobileNumber));

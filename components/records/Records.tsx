@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { FC, useContext } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { StoreState } from '../../store/context';
+import { AppState } from '../../store/context';
 import FabActions from './FabActions';
 import { RecordsNavigatorParamList } from './RecordsNavigator';
 import RecordTile from './RecordTile';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Records: FC<Props> = ({ navigation }) => {
-  const { records, travelRecords } = useContext(StoreState);
+  const { records, travelRecords } = useContext(AppState);
   const data = [...records, ...travelRecords].sort((a, b) => b.date - a.date);
 
   return (
@@ -34,7 +34,6 @@ const Records: FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
     backgroundColor: '#fff'
   }
 });

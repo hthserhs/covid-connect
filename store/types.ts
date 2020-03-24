@@ -2,11 +2,18 @@ export interface State {
   records: HealthRecord[];
   travelRecords: TravelRecord[];
   mobileNumber: string;
+  authToken: string | null;
+  userType: UserType;
+  userProfile: UserProfile | null;
 }
 
 export type RecordType = 'travel' | 'health';
 
-export enum Symptom {}
+export enum UserType {
+  Unknown,
+  New,
+  Registered
+}
 
 export enum TransportMode {
   Flight = 'flight',
@@ -54,4 +61,25 @@ export interface RecordSymptom<T = SeverityLevel> {
 export interface SeverityLevelItem {
   text: string;
   color: string;
+}
+
+export interface UserProfile {
+  address: string;
+  advice: string;
+  age: number;
+  caseType: string;
+  city: string;
+  covidState: string;
+  dob: number;
+  firstName: string;
+  gender: string;
+  id: number;
+  isHighRisk: true;
+  lastName: string;
+  mobileNumber: string;
+  moniorState: string;
+  patientId: string;
+  pincode: number;
+  state: string;
+  transmissionType: string;
 }

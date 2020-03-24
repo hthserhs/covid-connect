@@ -12,10 +12,8 @@ export async function sendOtpToNumber(number: string) {
 export async function validateOtp(number: string, otp: string) {
   return api
     .post<ValidateOtpResponse>('login', {
-      params: {
-        number,
-        otp
-      }
+      number,
+      otp
     })
     .then(res => res.data);
 }

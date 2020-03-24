@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -11,48 +10,45 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
+import { register } from '../../api/user';
+import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
+import { AUTH_TOKEN, IS_NEW_USER } from '../../storage/keys';
+import { removeItems, saveItem } from '../../storage/storage';
+import { clearUserData, setUserType } from '../../store/actions';
+import { AppDispatch, AppState } from '../../store/context';
+import { UserType } from '../../store/types';
 import { t } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
-import { ProfileNavigatorParamList } from './ProfileNavigator';
 
-const DEFAULT_DATE = new Date('1996-01-01');
-const GENDER_RADIO_ITEMS = [
-  {
-    text: 'Male',
-    value: 'male'
-  },
-  {
-    text: 'Female',
-    value: 'female'
-  },
-  {
-    text: 'Other',
-    value: 'other'
-  }
-];
+const EditProfile = () => {
+  const { authToken, mobileNumber, userProfile } = useContext(AppState);
 
-export type EditProfileScreenNavigationProp = StackNavigationProp<
-  ProfileNavigatorParamList,
-  'EditProfile'
->;
-
-interface Props {
-  navigation: EditProfileScreenNavigationProp;
-}
-
-const EditProfile: FC<Props> = ({ navigation }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState('');
-  const [date, setDate] = useState<Date>(null);
-  const [pincode, setPincode] = useState('');
-
+  const [firstName, setFirstName] = useState(
+    userProfile ? userProfile.firstName : ''
+  );
+  const [lastName, setLastName] = useState(
+    userProfile ? userProfile.lastName : ''
+  );
+  const [gender, setGender] = useState(userProfile ? userProfile.gender : '');
+  const [date, setDate] = useState<Date>(
+    userProfile ? new Date(userProfile.dob) : null
+  );
+  const [pincode, setPincode] = useState(
+    userProfile ? String(userProfile.pincode) : ''
+  );
   const [show, setShow] = useState(false);
   const [alert, setAlert] = useState(null);
+  const dispatch = useContext(AppDispatch);
 
-  const disabled = !firstName || !lastName || !gender || !date || !pincode;
+  const disabled =
+    userProfile !== null ||
+    !firstName ||
+    !lastName ||
+    !gender ||
+    !date ||
+    !pincode;
 
   const onSubmit = () => {
     const profile = {
@@ -60,18 +56,31 @@ const EditProfile: FC<Props> = ({ navigation }) => {
       lastName,
       gender,
       dob: date.getTime(),
-      pincode
+      pincode: +pincode,
+      mobileNumber
     };
 
-    console.log(profile);
-
-    setAlert('Profile saved!');
+    register(authToken, profile)
+      .then(() => {
+        return saveItem(IS_NEW_USER, false);
+      })
+      .then(() => {
+        dispatch(setUserType(UserType.Registered));
+      })
+      .catch(() => {
+        setAlert('Failed to save details!');
+      });
   };
 
   const onChange = (event: Event, selectedDate: Date) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+  };
+
+  const onLogout = () => {
+    removeItems([AUTH_TOKEN, IS_NEW_USER]);
+    dispatch(clearUserData());
   };
 
   return (
@@ -137,7 +146,7 @@ const EditProfile: FC<Props> = ({ navigation }) => {
         </View>
         <TouchableHighlight
           style={{ alignItems: 'center', marginTop: 24 }}
-          onPress={() => navigation.navigate('Login')}
+          onPress={onLogout}
         >
           <Text
             style={{
@@ -149,7 +158,7 @@ const EditProfile: FC<Props> = ({ navigation }) => {
         </TouchableHighlight>
       </View>
       <Snackbar
-        visible={alert}
+        visible={alert !== null}
         onDismiss={() => setAlert(null)}
         duration={3000}
       >

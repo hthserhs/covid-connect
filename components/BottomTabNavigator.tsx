@@ -1,34 +1,21 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC } from 'react';
-import { AppNavigatorParamList } from '../App';
+import { useNavigation } from '@react-navigation/core';
+import React, { useContext } from 'react';
+import { AppState } from '../store/context';
+import { UserType } from '../store/types';
 import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
 import ProfileNavigator from './profile/ProfileNavigator';
 import RecordsNavigator from './records/RecordsNavigator';
 
-export type BottomTabNavigatorParamList = {
-  Records: undefined;
-  Alerts: undefined;
-  Profile: undefined;
-};
+const { Navigator, Screen } = createBottomTabNavigator();
 
-const { Navigator, Screen } = createBottomTabNavigator<
-  BottomTabNavigatorParamList
->();
+const BottomTabNavigator = () => {
+  const navigation = useNavigation();
+  const { userType } = useContext(AppState);
 
-type BottomTabScreenNavigationProp = StackNavigationProp<
-  AppNavigatorParamList,
-  'Home'
->;
-
-interface Props {
-  navigation: BottomTabScreenNavigationProp;
-}
-
-const BottomTabNavigator: FC<Props> = ({ navigation }) => {
   navigation.setOptions({
-    header: () => null
+    header: (): null => null
   });
 
   return (
@@ -36,6 +23,7 @@ const BottomTabNavigator: FC<Props> = ({ navigation }) => {
       tabBarOptions={{
         showLabel: false
       }}
+      initialRouteName={userType === UserType.New ? 'Profile' : 'Records'}
     >
       <Screen
         name="Records"

@@ -118,3 +118,20 @@ export const TRANSPORT_MODE_ICONS = {
   [TransportMode.Taxi]: 'taxi',
   [TransportMode.Other]: 'bike'
 };
+
+export const DEFAULT_DATE = new Date('1996-01-01');
+
+export const GENDER_RADIO_ITEMS = [
+  {
+    text: 'Male',
+    value: 'male'
+  },
+  {
+    text: 'Female',
+    value: 'female'
+  },
+  {
+    text: 'Other',
+    value: 'other'
+  }
+];
