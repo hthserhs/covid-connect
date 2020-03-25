@@ -5,3 +5,8 @@ export interface ValidateOtpResponse {
   isNewUser: boolean;
   patient: UserProfile | null;
 }
+
+export interface Symptom {
+  name: string;
+  displayName: string;
+}

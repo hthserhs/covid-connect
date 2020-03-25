@@ -1,17 +1,17 @@
 import nanoid from 'nanoid/non-secure';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import { SYMPTOMS } from '../../constants/app';
+import { getSymptoms } from '../../api/meta';
+import { Symptom as SymptomData } from '../../api/types';
 import { AppDispatch } from '../../store/context';
 import { SeverityLevel } from '../../store/types';
 import Button from '../common/Button';
 import Symptom from './Symptom';
 
 const AddHealthRecord = () => {
-  const [levels, setLevels] = useState(
-    SYMPTOMS.map(_ => SeverityLevel.Unspecified)
-  );
+  const [symptoms, setSymptoms] = useState<SymptomData[]>([]);
+  const [levels, setLevels] = useState([]);
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(AppDispatch);
 
@@ -22,8 +22,8 @@ const AddHealthRecord = () => {
   };
 
   const onAddRecord = () => {
-    const symptoms = levels.map((level, i) => ({
-      name: SYMPTOMS[i],
+    const recSymptoms = levels.map((level, i) => ({
+      name: symptoms[i].name,
       level
     }));
 
@@ -33,23 +33,30 @@ const AddHealthRecord = () => {
         record: {
           id: nanoid(),
           date: Date.now(),
-          symptoms,
+          symptoms: recSymptoms,
           type: 'health'
         }
       }
     });
 
-    setLevels(SYMPTOMS.map(_ => SeverityLevel.Unspecified));
+    setLevels(symptoms.map(_ => SeverityLevel.Unspecified));
     setAlert('Health record added!');
   };
+
+  useEffect(() => {
+    getSymptoms().then(resSymptoms => {
+      setSymptoms(resSymptoms);
+      setLevels(resSymptoms.map(_ => SeverityLevel.Unspecified));
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={SYMPTOMS}
+        data={symptoms}
         renderItem={({ item, index }) => (
           <Symptom
-            name={item}
+            name={item.displayName}
             level={levels[index]}
             onChangeSeverityLevel={level => onChangeSeverityLevel(index, level)}
           />

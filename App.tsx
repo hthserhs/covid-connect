@@ -32,17 +32,12 @@ function App() {
         authToken = await readItem(AUTH_TOKEN);
         isNewUser = await readItem(IS_NEW_USER);
       } catch (e) {
-        // @TODO handle error
         setError(true);
         setLoading(false);
       }
 
       isNewUser = safeJsonParse<boolean>(isNewUser);
 
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch(setAuthToken(authToken));
       dispatch(setUserType(isNewUser ? UserType.New : UserType.Registered));
       setLoading(false);

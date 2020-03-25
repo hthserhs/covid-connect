@@ -6,8 +6,6 @@ import {
 
 export const WEEK = 7 * 24 * 60 * 60 * 1000;
 
-export const SYMPTOMS = ['Fever', 'Fatigue', 'Dry Cough', 'Dyspnea', 'Myalgia'];
-
 export const SEV_LEVEL_SCORE = {
   [SeverityLevel.No]: 0,
   [SeverityLevel.Low]: 1,
@@ -103,7 +101,7 @@ export const TRANSPORT_MODE_RADIO_ITEMS = [
   },
   {
     text: 'Taxi',
-    value: TransportMode.Bus
+    value: TransportMode.Taxi
   },
   {
     text: 'Other',

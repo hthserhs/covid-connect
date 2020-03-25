@@ -1,10 +1,11 @@
 import nanoid from 'nanoid/non-secure';
-import { SEV_LEVEL_ORDER, SYMPTOMS, WEEK } from '../constants/app';
+import { SEV_LEVEL_ORDER, WEEK } from '../constants/app';
 import { HealthRecord, TransportMode, TravelRecord } from '../store/types';
 import { randomIntegerInRange, sample, sampleSize } from './util';
 
 const AIRPORTS = ['BLR', 'MAA', 'DEL', 'BOM', 'CCU', 'VNS', 'LKO', 'COK'];
 const AIRLINES = ['SG', '6E', 'G8', 'I5', 'AI'];
+export const SYMPTOMS = ['Fever', 'Fatigue', 'Dry Cough', 'Dyspnea', 'Myalgia'];
 
 export function getRandomHealthRecords(): HealthRecord[] {
   const numItems = randomIntegerInRange(2, 6);
