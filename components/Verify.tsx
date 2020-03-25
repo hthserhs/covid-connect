@@ -1,25 +1,32 @@
-import { useNavigation } from '@react-navigation/core';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
-import { AUTH_TOKEN, IS_NEW_USER } from '../storage/keys';
+import { RootStackParamList } from '../App';
+import {
+  AUTH_TOKEN,
+  IS_USER_PROFILE_COMPLETED,
+  USER_PROFILE
+} from '../storage/keys';
 import { saveItem } from '../storage/storage';
 import {
   setAuthToken,
-  setUserType,
-  updateMobileNumber,
+  setUserProfileCompleted,
   updateUserProfile
 } from '../store/actions';
-import { AppDispatch, AppState } from '../store/context';
-import { UserType } from '../store/types';
+import { AppDispatch } from '../store/context';
+import { text } from '../util/translation';
 import Button from './common/Button';
+
+type VerifyScreenRouteProp = RouteProp<RootStackParamList, 'Verify'>;
 
 const Verify = () => {
   const navigation = useNavigation();
+  const route = useRoute<VerifyScreenRouteProp>();
   const [otp, setOtp] = useState('');
-  const { mobileNumber } = useContext(AppState);
+  // const { mobileNumber } = useContext(AppState);
   const dispatch = useContext(AppDispatch);
   const [alert, setAlert] = useState(null);
   const inputRef = useRef(null);
@@ -27,39 +34,37 @@ const Verify = () => {
   const disabled = !/^\d{6}$/.test(otp);
 
   const onResendOtp = () => {
-    sendOtpToNumber(mobileNumber)
+    sendOtpToNumber(route.params.mobileNumber)
       .then(() => {
-        setAlert('OTP sent!');
+        setAlert(text('msg_otp_sent'));
       })
       .catch(() => {
-        setAlert('OTP could not be sent!');
+        setAlert(text('error_otp_not_sent'));
       });
   };
 
   const onChangeMobileNumber = () => {
-    dispatch(updateMobileNumber(''));
     navigation.navigate('Login');
   };
 
   const onValidateOtp = () => {
-    validateOtp(mobileNumber, otp)
-      .then(response => {
-        return Promise.all([
-          saveItem(AUTH_TOKEN, response.authToken),
-          saveItem(IS_NEW_USER, response.isNewUser)
-        ]).then(() => response);
-      })
-      .then(response => {
-        if (response.patient) {
-          dispatch(updateUserProfile(response.patient));
+    validateOtp(route.params.mobileNumber, otp)
+      .then(async response => {
+        try {
+          await Promise.all([
+            saveItem(USER_PROFILE, response.patient),
+            saveItem(AUTH_TOKEN, response.authToken),
+            saveItem(IS_USER_PROFILE_COMPLETED, !response.isNewUser)
+          ]);
+        } catch {
+          throw new Error(text('error_generic'));
         }
+        dispatch(updateUserProfile(response.patient));
         dispatch(setAuthToken(response.authToken));
-        dispatch(
-          setUserType(response.isNewUser ? UserType.New : UserType.Registered)
-        );
+        dispatch(setUserProfileCompleted(!response.isNewUser));
       })
-      .catch(() => {
-        setAlert('OTP validation failed!');
+      .catch((e: Error) => {
+        setAlert(e.message);
       });
   };
 
@@ -69,15 +74,13 @@ const Verify = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Verify your mobile number!</Text>
-      <Text style={styles.subText}>
-        Enter the one time password (OTP) sent to your mobile number.
-      </Text>
+      <Text style={styles.text}>{text('verify_mobile')}</Text>
+      <Text style={styles.subText}>{text('enter_otp')}</Text>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
           style={styles.input}
-          placeholder="Enter 6 digit OTP"
+          placeholder={text('placeholder_enter_otp')}
           keyboardType="numeric"
           value={otp}
           onChangeText={setOtp}
@@ -85,18 +88,24 @@ const Verify = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button text="Submit" disabled={disabled} onPress={onValidateOtp} />
+        <Button
+          text={text('btn_submit')}
+          disabled={disabled}
+          onPress={onValidateOtp}
+        />
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.subTextOtp}>Didn't receive OTP? </Text>
+        <Text style={styles.subTextOtp}>{text('otp_not_received')}</Text>
         <TouchableOpacity onPress={onResendOtp}>
-          <Text style={{ ...styles.subTextOtp, color: '#00AEEF' }}>Resend</Text>
+          <Text style={{ ...styles.subTextOtp, color: '#00AEEF' }}>
+            {text('otp_resend')}
+          </Text>
         </TouchableOpacity>
         <Text style={styles.subTextOtp}>.</Text>
       </View>
       <View style={styles.buttonOutlineContainer}>
         <Button
-          text="Change Mobile Number"
+          text={text('btn_change_mobile_number')}
           onPress={onChangeMobileNumber}
           outline={true}
         />

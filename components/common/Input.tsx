@@ -6,12 +6,12 @@ import {
   TextInput,
   View
 } from 'react-native';
-import { t } from '../../util/translation';
+import { text, TextKey } from '../../util/translation';
 
 interface Props {
   value: string;
   onChangeValue: (value: string) => void;
-  labelKey?: string;
+  labelKey?: TextKey;
   keyboardType?: KeyboardTypeOptions;
 }
 
@@ -23,7 +23,7 @@ const Input: FC<Props> = ({
 }) => {
   return (
     <View style={styles.field}>
-      {labelKey ? <Text style={styles.label}>{t(labelKey)}</Text> : null}
+      {labelKey ? <Text style={styles.label}>{text(labelKey)}</Text> : null}
       <TextInput
         style={styles.input}
         value={value}

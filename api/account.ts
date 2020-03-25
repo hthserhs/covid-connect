@@ -1,3 +1,4 @@
+import { text } from '../util/translation';
 import api from './client';
 import { ValidateOtpResponse } from './types';
 
@@ -15,5 +16,8 @@ export async function validateOtp(number: string, otp: string) {
       number,
       otp
     })
-    .then(res => res.data);
+    .then(res => res.data)
+    .catch(() => {
+      throw Error(text('error_otp_validation_failed'));
+    });
 }

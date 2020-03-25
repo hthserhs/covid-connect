@@ -1,5 +1,5 @@
 import { Action } from './actions';
-import { State, UserType } from './types';
+import { State } from './types';
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -13,11 +13,6 @@ export function reducer(state: State, action: Action): State {
         ...state,
         travelRecords: [...state.travelRecords, action.payload.record]
       };
-    case 'update_mobile_number':
-      return {
-        ...state,
-        mobileNumber: action.payload.mobileNumber
-      };
     case 'set_auth_token':
       return {
         ...state,
@@ -28,19 +23,18 @@ export function reducer(state: State, action: Action): State {
         ...state,
         authToken: null
       };
-    case 'set_user_type':
+    case 'set_user_profile_completed':
       return {
         ...state,
-        userType: action.payload.userType
+        userProfileCompleted: action.payload.userProfileCompleted
       };
     case 'clear_user_data':
       return {
         ...state,
         records: [],
         travelRecords: [],
-        mobileNumber: '',
         authToken: null,
-        userType: UserType.Unknown,
+        userProfileCompleted: false,
         userProfile: null
       };
     case 'update_user_profile':

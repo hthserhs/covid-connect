@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -10,62 +10,69 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
-import { register } from '../../api/user';
+import { editProfile } from '../../api/user';
 import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
-import { AUTH_TOKEN, IS_NEW_USER } from '../../storage/keys';
+import {
+  AUTH_TOKEN,
+  IS_USER_PROFILE_COMPLETED,
+  USER_PROFILE
+} from '../../storage/keys';
 import { removeItems, saveItem } from '../../storage/storage';
-import { clearUserData, setUserType } from '../../store/actions';
+import {
+  clearUserData,
+  setUserProfileCompleted,
+  updateUserProfile
+} from '../../store/actions';
 import { AppDispatch, AppState } from '../../store/context';
-import { UserType } from '../../store/types';
-import { t } from '../../util/translation';
+import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
 
 const EditProfile = () => {
-  const { authToken, mobileNumber, userProfile } = useContext(AppState);
-
-  const [firstName, setFirstName] = useState(
-    userProfile ? userProfile.firstName : ''
-  );
-  const [lastName, setLastName] = useState(
-    userProfile ? userProfile.lastName : ''
-  );
-  const [gender, setGender] = useState(userProfile ? userProfile.gender : '');
-  const [date, setDate] = useState<Date>(
-    userProfile ? new Date(userProfile.dob) : null
-  );
-  const [pincode, setPincode] = useState(
-    userProfile ? String(userProfile.pincode) : ''
-  );
+  const { authToken, userProfile } = useContext(AppState);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('');
+  const [date, setDate] = useState<Date>(null);
+  const [pincode, setPincode] = useState('');
   const [show, setShow] = useState(false);
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(AppDispatch);
 
-  const disabled =
-    userProfile !== null ||
-    !firstName ||
-    !lastName ||
-    !gender ||
-    !date ||
-    !pincode;
+  const disabled = !firstName || !lastName || !gender || !date || !pincode;
+
+  useEffect(() => {
+    if (userProfile) {
+      setFirstName(userProfile.firstName || '');
+      setLastName(userProfile.lastName || '');
+      setGender(userProfile.gender || '');
+      setDate(userProfile.dob > 0 ? new Date(userProfile.dob) : null);
+      setPincode(userProfile.pincode > 0 ? String(userProfile.pincode) : '');
+    }
+  }, [userProfile]);
 
   const onSubmit = () => {
     const profile = {
+      ...userProfile,
       firstName,
       lastName,
       gender,
       dob: date.getTime(),
-      pincode: +pincode,
-      mobileNumber
+      pincode: +pincode
     };
 
-    register(authToken, profile)
-      .then(() => {
-        return saveItem(IS_NEW_USER, false);
+    editProfile(authToken, profile)
+      .then(async () => {
+        await Promise.all([
+          saveItem(IS_USER_PROFILE_COMPLETED, true),
+          saveItem(USER_PROFILE, profile)
+        ]);
+        dispatch(updateUserProfile(profile));
+        dispatch(setUserProfileCompleted(true));
       })
       .then(() => {
-        dispatch(setUserType(UserType.Registered));
+        setAlert('Profile updated!');
       })
       .catch(() => {
         setAlert('Failed to save details!');
@@ -79,7 +86,7 @@ const EditProfile = () => {
   };
 
   const onLogout = () => {
-    removeItems([AUTH_TOKEN, IS_NEW_USER]);
+    removeItems([AUTH_TOKEN, IS_USER_PROFILE_COMPLETED, USER_PROFILE]);
     dispatch(clearUserData());
   };
 
@@ -92,15 +99,15 @@ const EditProfile = () => {
         <Input
           value={firstName}
           onChangeValue={setFirstName}
-          labelKey="firstName"
+          labelKey="first_name"
         />
         <Input
           value={lastName}
           onChangeValue={setLastName}
-          labelKey="lastName"
+          labelKey="last_name"
         />
         <View style={styles.field}>
-          <Text style={styles.label}>{t('gender')}</Text>
+          <Text style={styles.label}>{text('gender')}</Text>
           <View style={{ marginTop: 6 }}>
             <Radio
               items={GENDER_RADIO_ITEMS}
@@ -110,7 +117,7 @@ const EditProfile = () => {
           </View>
         </View>
         <View style={styles.field}>
-          <Text style={styles.label}>{t('dob')}</Text>
+          <Text style={styles.label}>{text('dob')}</Text>
           <TouchableOpacity
             style={styles.input}
             onPress={() => {
@@ -139,7 +146,7 @@ const EditProfile = () => {
         />
         <View style={styles.buttonContainer}>
           <Button
-            text={t('saveProfile')}
+            text={text('save_profile')}
             onPress={onSubmit}
             disabled={disabled}
           />
@@ -196,11 +203,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 30
-  },
-  radioGroupItems: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
   },
   date: { fontSize: 18 }
 });

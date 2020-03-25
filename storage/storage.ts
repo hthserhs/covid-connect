@@ -1,6 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import { logError } from '../util/logger';
 
+export async function log() {
+  const keys = await AsyncStorage.getAllKeys();
+  const values = await AsyncStorage.multiGet(keys);
+  console.log(values);
+}
+
 export async function removeItems(keys: string[]) {
   return Promise.all(keys.map(removeItem));
 }

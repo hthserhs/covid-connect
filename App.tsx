@@ -6,40 +6,60 @@ import BottomTabNavigator from './components/BottomTabNavigator';
 import Login from './components/Login';
 import SplashScreen from './components/SplashScreen';
 import Verify from './components/Verify';
-import { AUTH_TOKEN, IS_NEW_USER } from './storage/keys';
-import { readItem, safeJsonParse } from './storage/storage';
-import { setAuthToken, setUserType } from './store/actions';
+import {
+  AUTH_TOKEN,
+  IS_USER_PROFILE_COMPLETED,
+  USER_PROFILE
+} from './storage/keys';
+import { log, readItem, safeJsonParse } from './storage/storage';
+import {
+  setAuthToken,
+  setUserProfileCompleted,
+  updateUserProfile
+} from './store/actions';
 import { AppDispatch, AppState } from './store/context';
 import initialState from './store/initial-state';
 import { reducer } from './store/reducer';
-import { UserType } from './store/types';
+import { UserProfile } from './store/types';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Login: undefined;
+  Verify: { mobileNumber: string };
+  Home: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  log();
+  console.log(state);
   const { authToken } = state;
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      let authToken;
-      let isNewUser;
+      let authToken: string;
+      let isUserProfileCompleted;
+      let userProfile;
 
       try {
         authToken = await readItem(AUTH_TOKEN);
-        isNewUser = await readItem(IS_NEW_USER);
+        isUserProfileCompleted = await readItem(IS_USER_PROFILE_COMPLETED);
+        userProfile = await readItem(USER_PROFILE);
       } catch (e) {
         setError(true);
         setLoading(false);
       }
 
-      isNewUser = safeJsonParse<boolean>(isNewUser);
+      isUserProfileCompleted = safeJsonParse<boolean>(isUserProfileCompleted);
+      userProfile = safeJsonParse<UserProfile>(userProfile);
 
+      dispatch(updateUserProfile(userProfile));
       dispatch(setAuthToken(authToken));
-      dispatch(setUserType(isNewUser ? UserType.New : UserType.Registered));
+      dispatch(setUserProfileCompleted(isUserProfileCompleted === true));
       setLoading(false);
     };
 

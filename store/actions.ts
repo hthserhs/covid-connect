@@ -3,8 +3,7 @@ import {
   HealthRecord,
   TransportMode,
   TravelRecord,
-  UserProfile,
-  UserType
+  UserProfile
 } from './types';
 
 export interface AddRecord {
@@ -18,13 +17,6 @@ export interface AddTravelRecord {
   type: 'add_travel_record';
   payload: {
     record: TravelRecord;
-  };
-}
-
-export interface UpdateMobileNumber {
-  type: 'update_mobile_number';
-  payload: {
-    mobileNumber: string;
   };
 }
 
@@ -43,10 +35,10 @@ export interface ClearUserData {
   type: 'clear_user_data';
 }
 
-export interface SetUserType {
-  type: 'set_user_type';
+export interface SetUserProfileCompleted {
+  type: 'set_user_profile_completed';
   payload: {
-    userType: UserType;
+    userProfileCompleted: boolean;
   };
 }
 
@@ -80,15 +72,6 @@ export function addTravelRecord(
   };
 }
 
-export function updateMobileNumber(mobileNumber: string): UpdateMobileNumber {
-  return {
-    type: 'update_mobile_number',
-    payload: {
-      mobileNumber
-    }
-  };
-}
-
 export function setAuthToken(authToken: string): SetAuthToken {
   return {
     type: 'set_auth_token',
@@ -110,11 +93,13 @@ export function clearUserData(): ClearUserData {
   };
 }
 
-export function setUserType(userType: UserType): SetUserType {
+export function setUserProfileCompleted(
+  userProfileCompleted: boolean
+): SetUserProfileCompleted {
   return {
-    type: 'set_user_type',
+    type: 'set_user_profile_completed',
     payload: {
-      userType
+      userProfileCompleted
     }
   };
 }
@@ -131,9 +116,8 @@ export function updateUserProfile(userProfile: UserProfile): UpdateUserProfile {
 export type Action =
   | AddRecord
   | AddTravelRecord
-  | UpdateMobileNumber
   | SetAuthToken
   | ClearAuthToken
   | ClearUserData
-  | SetUserType
+  | SetUserProfileCompleted
   | UpdateUserProfile;

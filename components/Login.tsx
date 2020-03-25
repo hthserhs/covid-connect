@@ -1,56 +1,55 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber } from '../api/account';
-import { updateMobileNumber } from '../store/actions';
-import { AppDispatch, AppState } from '../store/context';
+import { text } from '../util/translation';
 import Button from './common/Button';
 
 const Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [alert, setAlert] = useState(null);
-  const disabled = !/^\d{10}$/.test(mobileNumber);
-  const dispatch = useContext(AppDispatch);
+  // const dispatch = useContext(AppDispatch);
   const inputRef = useRef(null);
-  const { mobileNumber: mobNumber } = useContext(AppState);
+  // const { mobileNumber: mNumber } = useContext(AppState);
+
+  const disabled = !/^\d{10}$/.test(mobileNumber);
 
   const onRequestOtp = () => {
-    dispatch(updateMobileNumber(mobileNumber));
+    // dispatch(updateMobileNumber(mobileNumber));
     sendOtpToNumber(mobileNumber)
       .then(() => {
-        setAlert('OTP sent!');
+        setAlert(text('msg_otp_sent'));
       })
       .catch(() => {
-        setAlert('OTP could not be sent!');
+        setAlert(text('error_otp_not_sent'));
       });
-    navigation.navigate('Verify');
+    navigation.navigate('Verify', {
+      mobileNumber
+    });
   };
 
-  useEffect(() => {
-    inputRef.current.focus();
-    setMobileNumber(mobNumber);
-  }, [mobNumber]);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  //   setMobileNumber(mNumber);
+  // }, [mNumber]);
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require('../assets/doc.png')} style={styles.image} />
       </View>
-      <Text style={styles.text}>Be safe. Stay safe.</Text>
-      <Text style={styles.subText}>
-        Record your symptoms and be notified of recommendations from your
-        healthcare providers.
-      </Text>
+      <Text style={styles.text}>{text('msg_primary_home')}</Text>
+      <Text style={styles.subText}>{text('msg_secondary_home')}</Text>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
           style={styles.input}
-          placeholder="10 digit mobile number"
+          placeholder={text('placeholder_enter_mobile')}
           textContentType="telephoneNumber"
-          keyboardType="phone-pad"
+          keyboardType="number-pad"
           value={mobileNumber}
           onChangeText={setMobileNumber}
           autoFocus={true}
@@ -62,7 +61,11 @@ const Login = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button text="Request OTP" onPress={onRequestOtp} disabled={disabled} />
+        <Button
+          text={text('btn_request_otp')}
+          onPress={onRequestOtp}
+          disabled={disabled}
+        />
       </View>
       <Snackbar
         visible={alert}

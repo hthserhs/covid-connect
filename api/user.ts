@@ -2,12 +2,9 @@ import { UserProfile } from '../store/types';
 import { logError } from '../util/logger';
 import api from './client';
 
-export async function register(
-  authToken: string,
-  profile: Partial<UserProfile>
-) {
+export async function editProfile(authToken: string, profile: UserProfile) {
   return api
-    .post('patients', profile, {
+    .post<UserProfile>(`patients/${profile.id}`, profile, {
       headers: {
         token: authToken
       }

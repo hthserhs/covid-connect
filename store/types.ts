@@ -1,19 +1,12 @@
 export interface State {
   records: HealthRecord[];
   travelRecords: TravelRecord[];
-  mobileNumber: string;
   authToken: string | null;
-  userType: UserType;
+  userProfileCompleted: boolean;
   userProfile: UserProfile | null;
 }
 
 export type RecordType = 'travel' | 'health';
-
-export enum UserType {
-  Unknown,
-  New,
-  Registered
-}
 
 export enum TransportMode {
   Flight = 'flight',

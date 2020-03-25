@@ -1,8 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/core';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppState } from '../store/context';
-import { UserType } from '../store/types';
 import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
 import ProfileNavigator from './profile/ProfileNavigator';
@@ -12,18 +11,21 @@ const { Navigator, Screen } = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const navigation = useNavigation();
-  const { userType } = useContext(AppState);
+  const { userProfileCompleted } = useContext(AppState);
 
   navigation.setOptions({
     header: (): null => null
   });
+
+  useEffect(() => {
+    navigation.navigate(userProfileCompleted ? 'Records' : 'Profile');
+  }, [userProfileCompleted]);
 
   return (
     <Navigator
       tabBarOptions={{
         showLabel: false
       }}
-      initialRouteName={userType === UserType.New ? 'Profile' : 'Records'}
     >
       <Screen
         name="Records"

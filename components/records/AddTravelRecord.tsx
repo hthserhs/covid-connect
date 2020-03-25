@@ -18,7 +18,7 @@ import {
 import { addTravelRecord } from '../../store/actions';
 import { AppDispatch } from '../../store/context';
 import { TransportMode } from '../../store/types';
-import { t } from '../../util/translation';
+import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
@@ -72,7 +72,7 @@ const AddTravelRecord = () => {
           />
         </View>
         <View style={styles.field}>
-          <Text style={styles.label}>{t('date')}</Text>
+          <Text style={styles.label}>{text('date')}</Text>
           <TouchableOpacity
             style={styles.input}
             onPress={() => {

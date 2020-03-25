@@ -3,6 +3,7 @@ import {
   TransportMode,
   ValueSeverityLevel
 } from '../store/types';
+import { TextKey } from '../util/translation';
 
 export const WEEK = 7 * 24 * 60 * 60 * 1000;
 
@@ -35,33 +36,33 @@ export const SEV_LEVEL_ORDER: ValueSeverityLevel[] = [
 ];
 
 export const LABELS_TRANSPORT_FROM: {
-  [key in TransportMode]: string;
+  [key in TransportMode]: TextKey;
 } = {
-  flight: 'fromAirport',
-  train: 'fromStation',
-  bus: 'fromLocation',
-  taxi: 'fromLocation',
-  other: 'fromLocation'
+  flight: 'from_airport',
+  train: 'from_station',
+  bus: 'from_location',
+  taxi: 'from_location',
+  other: 'from_location'
 };
 
 export const LABELS_TRANSPORT_TO: {
-  [key in TransportMode]: string;
+  [key in TransportMode]: TextKey;
 } = {
-  flight: 'toAirport',
-  train: 'toStation',
-  bus: 'toLocation',
-  taxi: 'toLocation',
-  other: 'toLocation'
+  flight: 'to_airport',
+  train: 'to_station',
+  bus: 'to_location',
+  taxi: 'to_location',
+  other: 'to_location'
 };
 
 export const LABELS_TRANSPORT_ID: {
-  [key in TransportMode]: string;
+  [key in TransportMode]: TextKey;
 } = {
-  flight: 'flightNumber',
-  train: 'trainNumber',
-  bus: 'busNumber',
-  taxi: 'transportId',
-  other: 'transportId'
+  flight: 'flight_number',
+  train: 'train_number',
+  bus: 'bus_number',
+  taxi: 'transport_id',
+  other: 'transport_id'
 };
 
 export const RECORD_ICONS = {

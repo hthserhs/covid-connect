@@ -23,7 +23,7 @@ const AddHealthRecord = () => {
 
   const onAddRecord = () => {
     const recSymptoms = levels.map((level, i) => ({
-      name: symptoms[i].name,
+      name: symptoms[i].displayName,
       level
     }));
 

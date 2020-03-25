@@ -1,11 +1,9 @@
-import { getRandomHealthRecords, getRandomTravelRecords } from '../util/mock';
-import { State, UserType } from './types';
+import { State } from './types';
 
 export default {
-  records: getRandomHealthRecords(),
-  travelRecords: getRandomTravelRecords(),
-  mobileNumber: '',
+  records: [],
+  travelRecords: [],
   authToken: null,
-  userType: UserType.Unknown,
+  userProfileCompleted: false,
   userProfile: null
 } as State;
