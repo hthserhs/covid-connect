@@ -31,9 +31,12 @@ function isValueSeverityLevel(
 const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
   const { date, symptoms: allUserSymptoms } = record;
 
-  const userSymptoms = allUserSymptoms.filter<
-    RecordSymptom<ValueSeverityLevel>
-  >(isValueSeverityLevel);
+  const userSymptoms = allUserSymptoms
+    .filter<RecordSymptom<ValueSeverityLevel>>(isValueSeverityLevel)
+    .sort(
+      (a, b) =>
+        SEV_LEVEL_ORDER.indexOf(b.level) - SEV_LEVEL_ORDER.indexOf(a.level)
+    );
 
   let risk = userSymptoms.reduce((acc, s) => acc + SEV_LEVEL_SCORE[s.level], 0);
   risk = Math.min(risk, 4);
@@ -52,12 +55,12 @@ const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {userSymptoms.map(({ name, level }, index) => {
             const symptom = symptoms.find(s => s.name === name);
-            const symptomLabel = symptom ? symptom.displayName : '';
+            const symptomLabel = symptom ? symptom.displayName : 'NA';
             return (
               <View key={index} style={{ marginRight: 6, marginTop: 6 }}>
                 <Label
                   text={symptomLabel}
-                  current={SEV_LEVEL_ORDER.indexOf(level)}
+                  current={Math.max(0, SEV_LEVEL_ORDER.indexOf(level))}
                   levels={4}
                   levelColors={SEV_LEVEL_ORDER.map(v => SEV_LEVEL_COLORS[v])}
                 />

@@ -19,12 +19,12 @@ const FabActions = () => {
           icon: 'thermometer',
           label: 'Add Health Record',
           onPress: () => navigation.navigate('AddHealthRecord')
-        },
-        {
-          icon: 'airplane',
-          label: 'Add Travel History',
-          onPress: () => navigation.navigate('AddTravelRecord')
         }
+        // {
+        //   icon: 'airplane',
+        //   label: 'Add Travel History',
+        //   onPress: () => navigation.navigate('AddTravelRecord')
+        // }
       ]}
       onStateChange={({ open }) => setOpen(open)}
     />
