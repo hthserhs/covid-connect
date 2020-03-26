@@ -4,21 +4,17 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
-import { RootStackParamList } from '../App';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
-  USER_PROFILE
+  USER_ID
 } from '../storage/keys';
 import { saveItem } from '../storage/storage';
-import {
-  setAuthToken,
-  setUserProfileCompleted,
-  updateUserProfile
-} from '../store/actions';
+import { updateAuthToken } from '../store/actions';
 import { AppDispatch } from '../store/context';
 import { text } from '../util/translation';
 import Button from './common/Button';
+import { RootStackParamList } from './RootNavigator';
 
 type VerifyScreenRouteProp = RouteProp<RootStackParamList, 'Verify'>;
 
@@ -26,10 +22,9 @@ const Verify = () => {
   const navigation = useNavigation();
   const route = useRoute<VerifyScreenRouteProp>();
   const [otp, setOtp] = useState('');
-  // const { mobileNumber } = useContext(AppState);
-  const dispatch = useContext(AppDispatch);
   const [alert, setAlert] = useState(null);
   const inputRef = useRef(null);
+  const dispatch = useContext(AppDispatch);
 
   const disabled = !/^\d{6}$/.test(otp);
 
@@ -52,16 +47,14 @@ const Verify = () => {
       .then(async response => {
         try {
           await Promise.all([
-            saveItem(USER_PROFILE, response.patient),
+            saveItem(USER_ID, response.patient.id),
             saveItem(AUTH_TOKEN, response.authToken),
             saveItem(IS_USER_PROFILE_COMPLETED, !response.isNewUser)
           ]);
+          dispatch(updateAuthToken(response.authToken));
         } catch {
           throw new Error(text('error_generic'));
         }
-        dispatch(updateUserProfile(response.patient));
-        dispatch(setAuthToken(response.authToken));
-        dispatch(setUserProfileCompleted(!response.isNewUser));
       })
       .catch((e: Error) => {
         setAlert(e.message);

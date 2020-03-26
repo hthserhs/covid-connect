@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { APISymptom } from '../../api/types';
 import {
   RECORD_ICONS,
   RISK_COLORS,
@@ -8,16 +9,17 @@ import {
   SEV_LEVEL_ORDER,
   SEV_LEVEL_SCORE
 } from '../../constants/app';
+import Label from '../common/Label';
 import {
   HealthRecord,
   RecordSymptom,
   SeverityLevel,
   ValueSeverityLevel
-} from '../../store/types';
-import Label from '../common/Label';
+} from './state/types';
 
 interface Props {
   record: HealthRecord;
+  symptoms: APISymptom[];
 }
 
 function isValueSeverityLevel(
@@ -26,14 +28,14 @@ function isValueSeverityLevel(
   return s.level !== SeverityLevel.Unspecified;
 }
 
-const HealthRecordTile: FC<Props> = ({ record }) => {
-  const { date, symptoms: allSymptoms } = record;
+const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
+  const { date, symptoms: allUserSymptoms } = record;
 
-  const symptoms = allSymptoms.filter<RecordSymptom<ValueSeverityLevel>>(
-    isValueSeverityLevel
-  );
+  const userSymptoms = allUserSymptoms.filter<
+    RecordSymptom<ValueSeverityLevel>
+  >(isValueSeverityLevel);
 
-  let risk = symptoms.reduce((acc, s) => acc + SEV_LEVEL_SCORE[s.level], 0);
+  let risk = userSymptoms.reduce((acc, s) => acc + SEV_LEVEL_SCORE[s.level], 0);
   risk = Math.min(risk, 4);
 
   return (
@@ -48,16 +50,20 @@ const HealthRecordTile: FC<Props> = ({ record }) => {
       <View>
         <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {symptoms.map(({ name, level }, index) => (
-            <View key={index} style={{ marginRight: 6, marginTop: 6 }}>
-              <Label
-                text={name}
-                current={SEV_LEVEL_ORDER.indexOf(level)}
-                levels={4}
-                levelColors={SEV_LEVEL_ORDER.map(v => SEV_LEVEL_COLORS[v])}
-              />
-            </View>
-          ))}
+          {userSymptoms.map(({ name, level }, index) => {
+            const symptom = symptoms.find(s => s.name === name);
+            const symptomLabel = symptom ? symptom.displayName : '';
+            return (
+              <View key={index} style={{ marginRight: 6, marginTop: 6 }}>
+                <Label
+                  text={symptomLabel}
+                  current={SEV_LEVEL_ORDER.indexOf(level)}
+                  levels={4}
+                  levelColors={SEV_LEVEL_ORDER.map(v => SEV_LEVEL_COLORS[v])}
+                />
+              </View>
+            );
+          })}
         </View>
       </View>
     </View>

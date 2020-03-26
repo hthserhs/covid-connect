@@ -5,8 +5,8 @@ import {
   SEV_LEVEL_ORDER,
   SEV_LEVEL_TEXTS
 } from '../../constants/app';
-import { SeverityLevel, SeverityLevelItem } from '../../store/types';
 import Severity from '../common/Severity';
+import { SeverityLevel, SeverityLevelItem } from './state/types';
 
 interface Props {
   name: string;

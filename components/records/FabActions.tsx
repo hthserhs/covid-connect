@@ -1,13 +1,10 @@
-import React, { FC, useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { RecordsScreenNavigationProp } from './Records';
 
-interface Props {
-  navigation: RecordsScreenNavigationProp;
-}
-
-const FabActions: FC<Props> = ({ navigation }) => {
+const FabActions = () => {
+  const navigation = useNavigation();
   const [open, setOpen] = useState(false);
 
   return (

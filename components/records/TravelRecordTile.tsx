@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RECORD_ICON_COLORS, TRANSPORT_MODE_ICONS } from '../../constants/app';
-import { TravelRecord } from '../../store/types';
+import { TravelRecord } from './state/types';
 
 interface Props {
   record: TravelRecord;

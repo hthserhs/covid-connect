@@ -11,14 +11,11 @@ const Login = () => {
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
   const [alert, setAlert] = useState(null);
-  // const dispatch = useContext(AppDispatch);
   const inputRef = useRef(null);
-  // const { mobileNumber: mNumber } = useContext(AppState);
 
   const disabled = !/^\d{10}$/.test(mobileNumber);
 
   const onRequestOtp = () => {
-    // dispatch(updateMobileNumber(mobileNumber));
     sendOtpToNumber(mobileNumber)
       .then(() => {
         setAlert(text('msg_otp_sent'));
@@ -30,11 +27,6 @@ const Login = () => {
       mobileNumber
     });
   };
-
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  //   setMobileNumber(mNumber);
-  // }, [mNumber]);
 
   return (
     <View style={styles.container}>

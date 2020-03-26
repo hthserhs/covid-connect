@@ -1,19 +1,48 @@
+import { useFocusEffect } from '@react-navigation/core';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useReducer } from 'react';
+import { getSymptoms } from '../../api/meta';
+import { getUserHealthRecords } from '../../api/user';
+import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
+import { readItem } from '../../storage/storage';
 import AddHealthRecord from './AddHealthRecord';
 import AddTravelRecord from './AddTravelRecord';
 import RecordDetails from './RecordDetails';
 import Records from './Records';
+import { updateHealthRecords, updateSymptoms } from './state/actions';
+import { RecordsDispatch, RecordsState } from './state/context';
+import initialState from './state/initial-state';
+import { reducer } from './state/reducer';
 
-export type RecordsNavigatorParamList = {
-  RecordList: undefined;
-  AddHealthRecord: undefined;
-  AddTravelRecord: undefined;
-  RecordDetails: undefined;
+const Stack = createStackNavigator();
+
+const RecordsNavigatorRoot = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const fetchRecords = React.useCallback(() => {
+    Promise.all([readItem(AUTH_TOKEN), readItem(USER_ID)]).then(
+      ([authToken, userId]) => {
+        Promise.all([
+          getUserHealthRecords(authToken, userId),
+          getSymptoms()
+        ]).then(([records, symptoms]) => {
+          dispatch(updateHealthRecords(records));
+          dispatch(updateSymptoms(symptoms));
+        });
+      }
+    );
+  }, []);
+
+  useFocusEffect(fetchRecords);
+
+  return (
+    <RecordsDispatch.Provider value={dispatch}>
+      <RecordsState.Provider value={state}>
+        <RecordsNavigator />
+      </RecordsState.Provider>
+    </RecordsDispatch.Provider>
+  );
 };
-
-const Stack = createStackNavigator<RecordsNavigatorParamList>();
 
 const RecordsNavigator = () => {
   return (
@@ -42,6 +71,4 @@ const RecordsNavigator = () => {
   );
 };
 
-export default RecordsNavigator;
-
-const styles = StyleSheet.create({});
+export default RecordsNavigatorRoot;

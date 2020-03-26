@@ -1,7 +1,7 @@
 import api from './client';
-import { Symptom } from './types';
+import { APISymptom } from './types';
 
 export async function getSymptoms() {
-  const response = await api.get<Symptom[]>('symptoms');
+  const response = await api.get<APISymptom[]>('symptoms');
   return response.data;
 }

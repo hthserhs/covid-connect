@@ -1,32 +1,25 @@
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { FC, useContext } from 'react';
+import React, { useContext } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { AppState } from '../../store/context';
 import FabActions from './FabActions';
-import { RecordsNavigatorParamList } from './RecordsNavigator';
 import RecordTile from './RecordTile';
+import { RecordsState } from './state/context';
 
-export type RecordsScreenNavigationProp = StackNavigationProp<
-  RecordsNavigatorParamList,
-  'RecordList'
->;
-
-interface Props {
-  navigation: RecordsScreenNavigationProp;
-}
-
-const Records: FC<Props> = ({ navigation }) => {
-  const { records, travelRecords } = useContext(AppState);
-  const data = [...records, ...travelRecords].sort((a, b) => b.date - a.date);
+const Records = () => {
+  const { healthRecords, travelRecords, symptoms } = useContext(RecordsState);
+  const data = [...healthRecords, ...travelRecords].sort(
+    (a, b) => b.date - a.date
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
-        renderItem={({ item }) => <RecordTile record={item} />}
+        renderItem={({ item }) => (
+          <RecordTile record={item} symptoms={symptoms} />
+        )}
         keyExtractor={item => item.id}
       />
-      <FabActions navigation={navigation} />
+      <FabActions />
     </View>
   );
 };

@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/core';
-import React, { useContext, useEffect } from 'react';
-import { AppState } from '../store/context';
+import React, { useEffect } from 'react';
+import { IS_USER_PROFILE_COMPLETED } from '../storage/keys';
+import { readItem } from '../storage/storage';
 import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
 import ProfileNavigator from './profile/ProfileNavigator';
@@ -11,15 +12,16 @@ const { Navigator, Screen } = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const navigation = useNavigation();
-  const { userProfileCompleted } = useContext(AppState);
 
   navigation.setOptions({
     header: (): null => null
   });
 
   useEffect(() => {
-    navigation.navigate(userProfileCompleted ? 'Records' : 'Profile');
-  }, [userProfileCompleted]);
+    readItem(IS_USER_PROFILE_COMPLETED).then(userProfileCompleted => {
+      navigation.navigate(userProfileCompleted ? 'Records' : 'Profile');
+    });
+  }, []);
 
   return (
     <Navigator

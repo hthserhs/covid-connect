@@ -1,3 +1,4 @@
+import { SeverityLevel } from '../components/records/state/types';
 import { UserProfile } from '../store/types';
 
 export interface ValidateOtpResponse {
@@ -6,7 +7,19 @@ export interface ValidateOtpResponse {
   patient: UserProfile | null;
 }
 
-export interface Symptom {
+export interface APISymptom {
   name: string;
   displayName: string;
+}
+
+export interface APIHealthRecord {
+  date: number;
+  note: string;
+  sequenceNo: number;
+  symptoms: APIHealthRecordSymptom[];
+}
+
+export interface APIHealthRecordSymptom {
+  name: string;
+  severity: SeverityLevel;
 }

@@ -1,6 +1,10 @@
 import nanoid from 'nanoid/non-secure';
+import {
+  HealthRecord,
+  TransportMode,
+  TravelRecord
+} from '../components/records/state/types';
 import { SEV_LEVEL_ORDER, WEEK } from '../constants/app';
-import { HealthRecord, TransportMode, TravelRecord } from '../store/types';
 import { randomIntegerInRange, sample, sampleSize } from './util';
 
 const AIRPORTS = ['BLR', 'MAA', 'DEL', 'BOM', 'CCU', 'VNS', 'LKO', 'COK'];

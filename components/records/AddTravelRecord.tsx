@@ -15,13 +15,13 @@ import {
   LABELS_TRANSPORT_TO,
   TRANSPORT_MODE_RADIO_ITEMS
 } from '../../constants/app';
-import { addTravelRecord } from '../../store/actions';
-import { AppDispatch } from '../../store/context';
-import { TransportMode } from '../../store/types';
 import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
+import { addTravelRecord } from './state/actions';
+import { RecordsDispatch } from './state/context';
+import { TransportMode } from './state/types';
 
 const AddTravelRecord = () => {
   const [date, setDate] = useState(new Date());
@@ -31,7 +31,7 @@ const AddTravelRecord = () => {
   const [transportId, setTransportId] = useState('');
   const [transportMode, setTransportMode] = useState(TransportMode.Flight);
   const [alert, setAlert] = useState(null);
-  const dispatch = useContext(AppDispatch);
+  const dispatch = useContext(RecordsDispatch);
 
   const disabled = !date || !fromLocation || !toLocation || !transportId;
 

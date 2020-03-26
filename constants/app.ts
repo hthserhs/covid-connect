@@ -2,7 +2,7 @@ import {
   SeverityLevel,
   TransportMode,
   ValueSeverityLevel
-} from '../store/types';
+} from '../components/records/state/types';
 import { TextKey } from '../util/translation';
 
 export const WEEK = 7 * 24 * 60 * 60 * 1000;

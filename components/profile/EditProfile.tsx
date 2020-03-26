@@ -10,27 +10,24 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
-import { editProfile } from '../../api/user';
+import { editProfile, getProfile } from '../../api/user';
 import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
-  USER_PROFILE
+  USER_ID
 } from '../../storage/keys';
-import { removeItems, saveItem } from '../../storage/storage';
-import {
-  clearUserData,
-  setUserProfileCompleted,
-  updateUserProfile
-} from '../../store/actions';
-import { AppDispatch, AppState } from '../../store/context';
+import { readItem, removeItems, saveItem } from '../../storage/storage';
+import { updateAuthToken } from '../../store/actions';
+import { AppDispatch } from '../../store/context';
+import { UserProfile } from '../../store/types';
 import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
 
 const EditProfile = () => {
-  const { authToken, userProfile } = useContext(AppState);
+  const [userProfile, setUserProfile] = useState<UserProfile>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
@@ -52,6 +49,14 @@ const EditProfile = () => {
     }
   }, [userProfile]);
 
+  useEffect(() => {
+    Promise.all([readItem(AUTH_TOKEN), readItem(USER_ID)]).then(
+      ([authToken, userId]) => {
+        getProfile(authToken, userId).then(setUserProfile);
+      }
+    );
+  }, []);
+
   const onSubmit = () => {
     const profile = {
       ...userProfile,
@@ -62,21 +67,19 @@ const EditProfile = () => {
       pincode: +pincode
     };
 
-    editProfile(authToken, profile)
-      .then(async () => {
-        await Promise.all([
-          saveItem(IS_USER_PROFILE_COMPLETED, true),
-          saveItem(USER_PROFILE, profile)
-        ]);
-        dispatch(updateUserProfile(profile));
-        dispatch(setUserProfileCompleted(true));
-      })
-      .then(() => {
-        setAlert('Profile updated!');
-      })
-      .catch(() => {
-        setAlert('Failed to save details!');
-      });
+    readItem(AUTH_TOKEN).then(authToken => {
+      editProfile(authToken, profile)
+        .then(async () => {
+          await Promise.all([saveItem(IS_USER_PROFILE_COMPLETED, true)]);
+          setUserProfile(profile);
+        })
+        .then(() => {
+          setAlert('Profile updated!');
+        })
+        .catch(() => {
+          setAlert('Failed to save details!');
+        });
+    });
   };
 
   const onChange = (event: Event, selectedDate: Date) => {
@@ -86,8 +89,8 @@ const EditProfile = () => {
   };
 
   const onLogout = () => {
-    removeItems([AUTH_TOKEN, IS_USER_PROFILE_COMPLETED, USER_PROFILE]);
-    dispatch(clearUserData());
+    removeItems([AUTH_TOKEN, IS_USER_PROFILE_COMPLETED, USER_ID]);
+    dispatch(updateAuthToken(null));
   };
 
   return (
