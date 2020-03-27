@@ -52,7 +52,12 @@ const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
       </View>
       <View>
         <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap'
+          }}
+        >
           {userSymptoms.map(({ name, level }, index) => {
             const symptom = symptoms.find(s => s.name === name);
             const symptomLabel = symptom ? symptom.displayName : 'NA';
@@ -77,8 +82,9 @@ export default HealthRecordTile;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    paddingHorizontal: 12,
-    paddingVertical: 18,
+    paddingRight: 48,
+    paddingLeft: 6,
+    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center'
   },

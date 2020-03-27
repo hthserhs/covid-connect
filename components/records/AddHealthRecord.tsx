@@ -14,18 +14,21 @@ import Symptom from './Symptom';
 
 const AddHealthRecord = () => {
   const navigation = useNavigation();
-  const [levels, setLevels] = useState([]);
+  const [levels, setLevels] = useState<SeverityLevel[]>([]);
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(RecordsDispatch);
   const { symptoms } = useContext(RecordsState);
-
-  const disabled = levels.every(l => l === SeverityLevel.Unspecified);
 
   const onChangeSeverityLevel = (index: number, level: SeverityLevel) => {
     setLevels([...levels.slice(0, index), level, ...levels.slice(index + 1)]);
   };
 
   const onAddRecord = async () => {
+    if (levels.every(l => l === SeverityLevel.Unspecified)) {
+      setAlert('Select at least one symptom!');
+      return;
+    }
+
     const recSymptoms = levels.map((level, i) => ({
       name: symptoms[i].name,
       level
@@ -66,11 +69,17 @@ const AddHealthRecord = () => {
       <FlatList
         data={symptoms}
         renderItem={({ item, index }) => (
-          <Symptom
-            name={item.displayName}
-            level={levels[index]}
-            onChangeSeverityLevel={level => onChangeSeverityLevel(index, level)}
-          />
+          <View
+            style={{ marginBottom: index === symptoms.length - 1 ? 24 : 0 }}
+          >
+            <Symptom
+              name={item.displayName}
+              level={levels[index]}
+              onChangeSeverityLevel={level =>
+                onChangeSeverityLevel(index, level)
+              }
+            />
+          </View>
         )}
         keyExtractor={(_, index) => String(index)}
       />
@@ -81,14 +90,15 @@ const AddHealthRecord = () => {
       >
         {alert}
       </Snackbar>
-      <Button text="Add" onPress={onAddRecord} disabled={disabled} />
+      <Button text="Add" onPress={onAddRecord} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   }
 });
 

@@ -177,13 +177,11 @@ const EditProfile = () => {
           {alert}
         </Snackbar>
       </ScrollView>
-      <View style={styles.buttonContainer}>
-        <Button
-          text={text('save_profile')}
-          onPress={onSubmit}
-          disabled={disabled}
-        />
-      </View>
+      <Button
+        text={text('save_profile')}
+        onPress={onSubmit}
+        disabled={disabled}
+      />
     </View>
   );
 };
@@ -214,6 +212,5 @@ const styles = StyleSheet.create({
   label: {
     color: '#979797'
   },
-  buttonContainer: {},
   date: { fontSize: 18 }
 });

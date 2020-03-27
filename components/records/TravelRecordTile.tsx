@@ -45,8 +45,8 @@ export default TravelRecordTile;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    paddingHorizontal: 12,
-    paddingVertical: 18,
+    paddingHorizontal: 6,
+    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center'
   },
