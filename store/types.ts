@@ -1,3 +1,8 @@
+import {
+  CoMorbiditiesItemName,
+  CovidRiskFactorItemName
+} from '../constants/app';
+
 export interface State {
   authToken: string | null;
 }
@@ -21,4 +26,6 @@ export interface UserProfile {
   pincode: number;
   state: string;
   transmissionType: string;
+  coMorbidities: CoMorbiditiesItemName[];
+  covidRiskFactors: CovidRiskFactorItemName[];
 }

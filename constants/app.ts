@@ -1,3 +1,4 @@
+import { TagItem } from '../components/common/types';
 import {
   SeverityLevel,
   TransportMode,
@@ -132,5 +133,70 @@ export const GENDER_RADIO_ITEMS = [
   {
     text: 'Other',
     value: 'other'
+  }
+];
+
+export type CovidRiskFactorItemName =
+  | 'travelToAffectedArea'
+  | 'closeContactSuspected'
+  | 'closeContactPositive'
+  | 'frontLineHealthWorked';
+
+export const COVID_RISK_FACTOR_TAG_ITEMS: TagItem<CovidRiskFactorItemName>[] = [
+  {
+    name: 'travelToAffectedArea',
+    text: 'History of travel or meeting in affected region(s)'
+  },
+  {
+    name: 'closeContactSuspected',
+    text: 'Close contact with someone with symptoms'
+  },
+  {
+    name: 'closeContactPositive',
+    text: 'Close contact with someone COVID-19 positive'
+  },
+  {
+    name: 'frontLineHealthWorked',
+    text: 'Deployed as front-line health worker'
+  }
+];
+
+export type CoMorbiditiesItemName =
+  | 'diabetes'
+  | 'highBloodPressure'
+  | 'heartDisease'
+  | 'kidneyDisease'
+  | 'lungDisease'
+  | 'stroke'
+  | 'reducedImmunity';
+
+export const CO_MORBIDITIES_TAG_ITEMS: TagItem<CoMorbiditiesItemName>[] = [
+  {
+    name: 'diabetes',
+    text: 'Diabetes'
+  },
+  {
+    name: 'highBloodPressure',
+    text: 'High Blood Pressure'
+  },
+  {
+    name: 'heartDisease',
+    text: 'Heart Disease'
+  },
+  {
+    name: 'kidneyDisease',
+    text: 'Kidney Disease'
+  },
+  {
+    name: 'lungDisease',
+    text: 'Lung Disease'
+  },
+  {
+    name: 'stroke',
+    text: 'Stroke'
+  },
+  {
+    name: 'reducedImmunity',
+    text: 'Reduced Immunity'
   }
 ];

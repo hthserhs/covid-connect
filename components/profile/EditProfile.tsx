@@ -1,17 +1,20 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableHighlight,
   View
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { editProfile, getProfile } from '../../api/user';
-import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
+import {
+  CoMorbiditiesItemName,
+  CovidRiskFactorItemName,
+  COVID_RISK_FACTOR_TAG_ITEMS,
+  CO_MORBIDITIES_TAG_ITEMS
+} from '../../constants/app';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
@@ -23,29 +26,34 @@ import { AppDispatch } from '../../store/context';
 import { UserProfile } from '../../store/types';
 import { text } from '../../util/translation';
 import Button from '../common/Button';
-import Input from '../common/Input';
-import Radio from '../common/Radio';
+import Tags from '../common/Tags';
+import Personal from './Personal';
+import ProfileSection from './ProfileSection';
+import { PersonalFormValues } from './types';
 
 const EditProfile = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>(null);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState('');
-  const [date, setDate] = useState<Date>(null);
-  const [pincode, setPincode] = useState('');
-  const [show, setShow] = useState(false);
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(AppDispatch);
 
-  const disabled = !firstName || !lastName || !gender || !date || !pincode;
+  const [personalValues, setPersonalValues] = useState(
+    new PersonalFormValues()
+  );
+
+  const disabled = false;
 
   useEffect(() => {
     if (userProfile) {
-      setFirstName(userProfile.firstName || '');
-      setLastName(userProfile.lastName || '');
-      setGender(userProfile.gender || '');
-      setDate(userProfile.dob > 0 ? new Date(userProfile.dob) : null);
-      setPincode(userProfile.pincode > 0 ? String(userProfile.pincode) : '');
+      setPersonalValues({
+        firstName: userProfile.firstName || '',
+        lastName: userProfile.lastName || '',
+        gender: userProfile.gender || '',
+        dob: userProfile.dob > 0 ? new Date(userProfile.dob) : null,
+        pincode: userProfile.pincode > 0 ? String(userProfile.pincode) : ''
+      });
+
+      setCoMorbidities(userProfile.coMorbidities || []);
+      setCovidRiskFactors(userProfile.covidRiskFactors || []);
     }
   }, [userProfile]);
 
@@ -60,11 +68,13 @@ const EditProfile = () => {
   const onSubmit = () => {
     const profile = {
       ...userProfile,
-      firstName,
-      lastName,
-      gender,
-      dob: date.getTime(),
-      pincode: +pincode
+      firstName: personalValues.firstName,
+      lastName: personalValues.lastName,
+      gender: personalValues.gender,
+      dob: personalValues.dob.getTime(),
+      pincode: +personalValues.pincode,
+      coMorbidities,
+      covidHistory: covidRiskFactors
     };
 
     readItem(AUTH_TOKEN).then(authToken => {
@@ -82,98 +92,98 @@ const EditProfile = () => {
     });
   };
 
-  const onChange = (event: Event, selectedDate: Date) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
-
   const onLogout = () => {
     removeItems([AUTH_TOKEN, IS_USER_PROFILE_COMPLETED, USER_ID]);
     dispatch(updateAuthToken(null));
   };
 
+  const [covidRiskFactors, setCovidRiskFactors] = useState<
+    CovidRiskFactorItemName[]
+  >([]);
+
+  const toggleHistoryItem = (name: CovidRiskFactorItemName) => {
+    const index = covidRiskFactors.indexOf(name);
+    if (index >= 0) {
+      setCovidRiskFactors([
+        ...covidRiskFactors.slice(0, index),
+        ...covidRiskFactors.slice(index + 1)
+      ]);
+    } else {
+      setCovidRiskFactors([...covidRiskFactors, name]);
+    }
+  };
+
+  const [coMorbidities, setCoMorbidities] = useState<CoMorbiditiesItemName[]>(
+    []
+  );
+
+  const toggleCoMorbitiesItem = (name: CoMorbiditiesItemName) => {
+    const index = coMorbidities.indexOf(name);
+    if (index >= 0) {
+      setCoMorbidities([
+        ...coMorbidities.slice(0, index),
+        ...coMorbidities.slice(index + 1)
+      ]);
+    } else {
+      setCoMorbidities([...coMorbidities, name]);
+    }
+  };
+
   return (
     <View style={styles.rootContainer}>
-      <View style={styles.imageContainer}>
-        <MaterialCommunityIcons name="account" size={72} color="#979797" />
-      </View>
-      <View style={styles.container}>
-        <Input
-          value={firstName}
-          onChangeValue={setFirstName}
-          labelKey="first_name"
-        />
-        <Input
-          value={lastName}
-          onChangeValue={setLastName}
-          labelKey="last_name"
-        />
-        <View style={styles.field}>
-          <Text style={styles.label}>{text('gender')}</Text>
-          <View style={{ marginTop: 6 }}>
-            <Radio
-              items={GENDER_RADIO_ITEMS}
-              value={gender}
-              onValue={setGender}
+      <ScrollView>
+        <View style={styles.imageContainer}>
+          <MaterialCommunityIcons name="account" size={72} color="#979797" />
+        </View>
+        <View style={styles.container}>
+          <ProfileSection title="Personal">
+            <Personal
+              values={personalValues}
+              onChangeValues={setPersonalValues}
+            />
+          </ProfileSection>
+          <ProfileSection title="COVID-19 Risk Factors">
+            <Tags
+              items={COVID_RISK_FACTOR_TAG_ITEMS}
+              selected={covidRiskFactors}
+              onToggle={toggleHistoryItem}
+            />
+          </ProfileSection>
+          <ProfileSection title="Pre-existing Conditions">
+            <Tags
+              items={CO_MORBIDITIES_TAG_ITEMS}
+              selected={coMorbidities}
+              onToggle={toggleCoMorbitiesItem}
+            />
+          </ProfileSection>
+          <View style={styles.buttonContainer}>
+            <Button
+              text={text('save_profile')}
+              onPress={onSubmit}
+              disabled={disabled}
             />
           </View>
-        </View>
-        <View style={styles.field}>
-          <Text style={styles.label}>{text('dob')}</Text>
-          <TouchableOpacity
-            style={styles.input}
-            onPress={() => {
-              setDate(date || DEFAULT_DATE);
-              setShow(true);
-            }}
+          <TouchableHighlight
+            style={{ alignItems: 'center', marginTop: 24, marginBottom: 24 }}
+            onPress={onLogout}
           >
-            <Text style={styles.date}>
-              {date ? date.toLocaleDateString() : ''}
+            <Text
+              style={{
+                color: '#00AEEF'
+              }}
+            >
+              Logout
             </Text>
-          </TouchableOpacity>
-          {show && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="spinner"
-              onChange={onChange}
-            />
-          )}
+          </TouchableHighlight>
         </View>
-        <Input
-          value={pincode}
-          onChangeValue={setPincode}
-          labelKey="pincode"
-          keyboardType="numeric"
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            text={text('save_profile')}
-            onPress={onSubmit}
-            disabled={disabled}
-          />
-        </View>
-        <TouchableHighlight
-          style={{ alignItems: 'center', marginTop: 24 }}
-          onPress={onLogout}
+        <Snackbar
+          visible={alert !== null}
+          onDismiss={() => setAlert(null)}
+          duration={3000}
         >
-          <Text
-            style={{
-              color: '#00AEEF'
-            }}
-          >
-            Logout
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <Snackbar
-        visible={alert !== null}
-        onDismiss={() => setAlert(null)}
-        duration={3000}
-      >
-        {alert}
-      </Snackbar>
+          {alert}
+        </Snackbar>
+      </ScrollView>
     </View>
   );
 };
@@ -205,7 +215,7 @@ const styles = StyleSheet.create({
     color: '#979797'
   },
   buttonContainer: {
-    marginTop: 30
+    marginTop: 36
   },
   date: { fontSize: 18 }
 });
