@@ -156,13 +156,6 @@ const EditProfile = () => {
               onToggle={toggleCoMorbitiesItem}
             />
           </ProfileSection>
-          <View style={styles.buttonContainer}>
-            <Button
-              text={text('save_profile')}
-              onPress={onSubmit}
-              disabled={disabled}
-            />
-          </View>
           <TouchableHighlight
             style={{ alignItems: 'center', marginTop: 24, marginBottom: 24 }}
             onPress={onLogout}
@@ -184,6 +177,13 @@ const EditProfile = () => {
           {alert}
         </Snackbar>
       </ScrollView>
+      <View style={styles.buttonContainer}>
+        <Button
+          text={text('save_profile')}
+          onPress={onSubmit}
+          disabled={disabled}
+        />
+      </View>
     </View>
   );
 };
@@ -214,8 +214,6 @@ const styles = StyleSheet.create({
   label: {
     color: '#979797'
   },
-  buttonContainer: {
-    marginTop: 36
-  },
+  buttonContainer: {},
   date: { fontSize: 18 }
 });
