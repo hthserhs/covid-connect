@@ -1,6 +1,6 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { C1, C9 } from '../../constants/colors';
+import { C11, C9 } from '../../constants/colors';
 
 interface Props {
   name: string;
@@ -9,7 +9,11 @@ interface Props {
 
 const TabBarIcon: FC<Props> = props => {
   return (
-    <FontAwesome5 name={props.name} size={30} color={props.focused ? C1 : C9} />
+    <FontAwesome5
+      name={props.name}
+      size={21}
+      color={props.focused ? C11 : C9}
+    />
   );
 };
 

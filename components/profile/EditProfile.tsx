@@ -9,7 +9,7 @@ import {
   COVID_RISK_FACTOR_TAG_ITEMS,
   CO_MORBIDITIES_TAG_ITEMS
 } from '../../constants/app';
-import { C1, C6, C8, C9 } from '../../constants/colors';
+import { C11, C6, C8, C9 } from '../../constants/colors';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
@@ -183,13 +183,7 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
             style={{ alignItems: 'center', marginTop: 24, marginBottom: 24 }}
             onPress={onLogout}
           >
-            <WrappedText
-              style={{
-                color: C1
-              }}
-            >
-              Logout
-            </WrappedText>
+            <WrappedText style={styles.logout}>Logout</WrappedText>
           </TouchableHighlight>
         </View>
         <Snackbar
@@ -235,5 +229,8 @@ const styles = StyleSheet.create({
   label: {
     color: C9
   },
-  date: { fontSize: 18 }
+  date: { fontSize: 18 },
+  logout: {
+    color: C11
+  }
 });

@@ -5,7 +5,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { getProfile } from './api/user';
 import Activity from './components/Activity';
 import RootNavigator from './components/RootNavigator';
-import { C1 } from './constants/colors';
+import { C1, C11 } from './constants/colors';
 import { AUTH_TOKEN, USER_ID } from './storage/keys';
 import { readItem, removeItems } from './storage/storage';
 import { updateAuthToken } from './store/actions';
@@ -18,7 +18,8 @@ const theme = {
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    accent: C1
+    accent: C11,
+    primary: C1
   }
 };
 

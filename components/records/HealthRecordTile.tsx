@@ -9,7 +9,7 @@ import {
   SEV_LEVEL_ORDER,
   SEV_LEVEL_SCORE
 } from '../../constants/app';
-import { C9 } from '../../constants/colors';
+import { C10 } from '../../constants/colors';
 import Label from '../common/Label';
 import WrappedText from '../common/WrappedText';
 import {
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   date: {
-    color: C9
+    color: C10,
+    fontSize: 16
   }
 });

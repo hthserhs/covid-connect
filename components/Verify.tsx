@@ -4,7 +4,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
-import { C1, C10, C6, C7, C9 } from '../constants/colors';
+import { C10, C11, C6, C7, C9 } from '../constants/colors';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
@@ -94,7 +94,7 @@ const Verify = () => {
           {text('otp_not_received')}{' '}
         </WrappedText>
         <TouchableOpacity onPress={onResendOtp}>
-          <WrappedText style={{ ...styles.subTextOtp, color: C1 }}>
+          <WrappedText style={{ ...styles.subTextOtp, color: C11 }}>
             {text('otp_resend')}
           </WrappedText>
         </TouchableOpacity>

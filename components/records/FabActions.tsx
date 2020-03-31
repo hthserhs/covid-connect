@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { C1, C6 } from '../../constants/colors';
+import { C11, C6 } from '../../constants/colors';
 
 const FabActions = () => {
   const navigation = useNavigation();
@@ -36,6 +36,6 @@ export default FabActions;
 
 const styles = StyleSheet.create({
   fab: {
-    backgroundColor: C1
+    backgroundColor: C11
   }
 });

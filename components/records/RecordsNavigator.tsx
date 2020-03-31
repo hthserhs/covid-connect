@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useReducer } from 'react';
 import { getSymptoms } from '../../api/meta';
 import { getUserHealthRecords } from '../../api/user';
+import { C1, C6 } from '../../constants/colors';
 import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
 import { readItem } from '../../storage/storage';
 import AddHealthRecord from './AddHealthRecord';
@@ -46,7 +47,14 @@ const RecordsNavigatorRoot = () => {
 
 const RecordsNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: C1
+        },
+        headerTintColor: C6
+      }}
+    >
       <Stack.Screen
         name="RecordList"
         component={Records}
