@@ -1,9 +1,10 @@
 import { interpolateHslLong, quantize } from 'd3-interpolate';
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { C8 } from '../../constants/colors';
 import WrappedText from './WrappedText';
 
-const COLOR_DEFAULT = '#ddd';
+const COLOR_DEFAULT = C8;
 
 interface Props {
   max: number;

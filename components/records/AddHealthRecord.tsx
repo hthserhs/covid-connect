@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { addUserHealthRecord } from '../../api/user';
+import { C6, C8, C9 } from '../../constants/colors';
 import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
 import { readItem } from '../../storage/storage';
 import Button from '../common/Button';
@@ -125,17 +126,17 @@ const AddHealthRecord = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: C6
   },
   field: {
     marginHorizontal: 24
   },
   label: {
-    color: '#979797'
+    color: C9
   },
   input: {
     fontSize: 18,
-    borderBottomColor: '#ddd',
+    borderBottomColor: C8,
     borderBottomWidth: 1,
     paddingBottom: 6
   },

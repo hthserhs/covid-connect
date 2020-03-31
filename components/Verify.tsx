@@ -4,6 +4,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
+import { C1, C10, C6, C7, C9 } from '../constants/colors';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
@@ -93,7 +94,7 @@ const Verify = () => {
           {text('otp_not_received')}{' '}
         </WrappedText>
         <TouchableOpacity onPress={onResendOtp}>
-          <WrappedText style={{ ...styles.subTextOtp, color: '#00AEEF' }}>
+          <WrappedText style={{ ...styles.subTextOtp, color: C1 }}>
             {text('otp_resend')}
           </WrappedText>
         </TouchableOpacity>
@@ -121,16 +122,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: C6
   },
   text: {
-    color: '#393939',
+    color: C10,
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 72
   },
   subText: {
-    color: '#979797',
+    color: C9,
     fontSize: 12,
     lineHeight: 14,
     paddingHorizontal: '12%',
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
     fontSize: 21,
-    backgroundColor: '#ebebeb',
+    backgroundColor: C7,
     height: 48
   },
   buttonContainer: {
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   subTextOtp: {
-    color: '#979797',
+    color: C9,
     fontSize: 12,
     marginTop: 24,
     textAlign: 'center'

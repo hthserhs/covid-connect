@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RECORD_ICON_COLORS, TRANSPORT_MODE_ICONS } from '../../constants/app';
+import { C9 } from '../../constants/colors';
 import WrappedText from '../common/WrappedText';
 import { TravelRecord } from './state/types';
 
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   date: {
-    color: '#979797'
+    color: C9
   },
   location: {
     paddingVertical: 6,

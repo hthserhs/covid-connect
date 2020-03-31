@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { C1 } from '../constants/colors';
 import WrappedText from './common/WrappedText';
 
 interface Props {
@@ -12,7 +13,7 @@ const Activity: FC<Props> = ({ error }) => {
       {error ? (
         <WrappedText>An error occured!</WrappedText>
       ) : (
-        <ActivityIndicator size="large" color="rgb(0, 174, 239)" />
+        <ActivityIndicator size="large" color={C1} />
       )}
     </View>
   );

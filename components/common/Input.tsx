@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { KeyboardTypeOptions, StyleSheet, TextInput, View } from 'react-native';
+import { C8, C9 } from '../../constants/colors';
 import { text, TextKey } from '../../util/translation';
 import WrappedText from './WrappedText';
 
@@ -37,12 +38,12 @@ const styles = StyleSheet.create({
   field: {},
   input: {
     fontSize: 18,
-    borderBottomColor: '#ddd',
+    borderBottomColor: C8,
     borderBottomWidth: 1,
     paddingBottom: 6
   },
   label: {
-    color: '#979797',
+    color: C9,
     fontSize: 16
   }
 });

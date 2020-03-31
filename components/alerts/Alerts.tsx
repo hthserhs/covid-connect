@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { C6 } from '../../constants/colors';
 import WrappedText from '../common/WrappedText';
 
 const Alerts = () => {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
-    backgroundColor: '#fff',
+    backgroundColor: C6,
     alignItems: 'center',
     justifyContent: 'center'
   }

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ViewStyle
 } from 'react-native';
+import { C1, C6, C7, C8, C9 } from '../../constants/colors';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -53,33 +54,33 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgb(0, 174, 239)',
+    backgroundColor: C1,
     height: 48
   },
   buttonDisabled: {
-    backgroundColor: 'rgb(230, 230, 230)',
-    borderColor: 'rgb(210, 210, 210)',
+    backgroundColor: C7,
+    borderColor: C8,
     borderWidth: 1
   },
   buttonText: {
-    color: 'rgb(255, 255, 255)',
+    color: C6,
     fontWeight: 'bold',
     fontSize: 18
   },
   buttonTextDisabled: {
-    color: 'rgb(190, 190, 190)'
+    color: C9
   },
   buttonOutline: {
     backgroundColor: 'transparent',
-    borderColor: 'rgb(0, 174, 239)',
+    borderColor: C1,
     borderWidth: 1
   },
   buttonOutlineDisabled: {
-    backgroundColor: 'rgb(250, 250, 250)',
-    borderColor: 'rgb(210, 210, 210)',
+    backgroundColor: C7,
+    borderColor: C8,
     borderWidth: 1
   },
   buttonOutlineText: {
-    color: 'rgb(0, 174, 239)'
+    color: C1
   }
 });

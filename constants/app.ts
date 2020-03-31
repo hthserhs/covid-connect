@@ -5,6 +5,7 @@ import {
   ValueSeverityLevel
 } from '../components/records/state/types';
 import { TextKey } from '../util/translation';
+import { C1, C2, C3, C4, C5 } from './colors';
 
 export const WEEK = 7 * 24 * 60 * 60 * 1000;
 
@@ -23,10 +24,10 @@ export const SEV_LEVEL_TEXTS = {
 };
 
 export const SEV_LEVEL_COLORS = {
-  [SeverityLevel.No]: '#00C000',
-  [SeverityLevel.Low]: '#FFD600',
-  [SeverityLevel.Mild]: '#FF9900',
-  [SeverityLevel.High]: '#FF0000'
+  [SeverityLevel.No]: C2,
+  [SeverityLevel.Low]: C3,
+  [SeverityLevel.Mild]: C4,
+  [SeverityLevel.High]: C5
 };
 
 export const SEV_LEVEL_ORDER: ValueSeverityLevel[] = [
@@ -72,20 +73,14 @@ export const RECORD_ICONS = {
 };
 
 export const RECORD_ICON_COLORS = {
-  health: 'rgb(0, 174, 239)',
-  travel: 'rgb(0, 174, 239)',
-  location: 'rgb(0, 174, 239)'
+  health: C1,
+  travel: C1,
+  location: C1
 };
 
-export const LEVEL_COLORS = ['#FFD600', '#FF9900', '#FF0000'];
+export const LEVEL_COLORS = [C3, C4, C5];
 
-export const RISK_COLORS = [
-  '#00C000',
-  '#1FDD1F',
-  '#FFD600',
-  '#FF9900',
-  '#FF0000'
-];
+export const RISK_COLORS = [C2, C3, C4, C5];
 
 export const TRANSPORT_MODE_RADIO_ITEMS = [
   {

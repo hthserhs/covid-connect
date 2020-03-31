@@ -2,6 +2,7 @@ import { color } from 'd3-color';
 import { interpolateHslLong, quantize } from 'd3-interpolate';
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
+import { C10 } from '../../constants/colors';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -38,6 +39,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 6,
     fontWeight: 'bold',
-    color: '#3A4249'
+    color: C10
   }
 });

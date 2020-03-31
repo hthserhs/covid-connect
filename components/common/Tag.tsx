@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity } from 'react-native';
+import { C1, C10, C6, C8 } from '../../constants/colors';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -29,11 +30,11 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingHorizontal: 18,
     paddingVertical: 6,
-    color: '#3A4249',
-    backgroundColor: '#E5E5E5'
+    color: C10,
+    backgroundColor: C8
   },
   selected: {
-    color: '#FFFFFF',
-    backgroundColor: '#00AEEF'
+    color: C6,
+    backgroundColor: C1
   }
 });

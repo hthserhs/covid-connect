@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Switch } from 'react-native-paper';
+import { C9 } from '../../constants/colors';
 import DateTime from '../common/DateTime';
 import WrappedText from '../common/WrappedText';
 import { QuarantineFormState } from './types';
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   label: {
-    color: '#979797',
+    color: C9,
     fontSize: 16
   }
 });

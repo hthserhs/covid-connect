@@ -9,6 +9,7 @@ import {
   COVID_RISK_FACTOR_TAG_ITEMS,
   CO_MORBIDITIES_TAG_ITEMS
 } from '../../constants/app';
+import { C1, C6, C8, C9 } from '../../constants/colors';
 import {
   AUTH_TOKEN,
   IS_USER_PROFILE_COMPLETED,
@@ -149,7 +150,7 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
     <View style={styles.rootContainer}>
       <ScrollView>
         <View style={styles.imageContainer}>
-          <MaterialCommunityIcons name="account" size={72} color="#979797" />
+          <MaterialCommunityIcons name="account" size={72} color={C9} />
         </View>
         <View style={styles.container}>
           <ProfileSection title="Personal">
@@ -184,7 +185,7 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
           >
             <WrappedText
               style={{
-                color: '#00AEEF'
+                color: C1
               }}
             >
               Logout
@@ -213,7 +214,7 @@ export default EditProfile;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: C6
   },
   imageContainer: {
     marginTop: 24,
@@ -227,12 +228,12 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 18,
-    borderBottomColor: '#ddd',
+    borderBottomColor: C8,
     borderBottomWidth: 1,
     paddingBottom: 6
   },
   label: {
-    color: '#979797'
+    color: C9
   },
   date: { fontSize: 18 }
 });

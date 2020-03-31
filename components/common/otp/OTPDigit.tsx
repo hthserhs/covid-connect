@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
+import { C7 } from '../../../constants/colors';
 
 interface Props {
   focus: boolean;
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
     fontSize: 21,
-    backgroundColor: '#ebebeb',
+    backgroundColor: C7,
     height: 48,
     width: '14%'
   }

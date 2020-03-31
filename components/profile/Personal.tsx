@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
+import { C8, C9 } from '../../constants/colors';
 import { text } from '../../util/translation';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
@@ -104,12 +105,12 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 18,
-    borderBottomColor: '#ddd',
+    borderBottomColor: C8,
     borderBottomWidth: 1,
     paddingBottom: 6
   },
   label: {
-    color: '#979797',
+    color: C9,
     fontSize: 16
   },
   date: { fontSize: 18 }

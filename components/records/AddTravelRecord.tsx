@@ -14,6 +14,7 @@ import {
   LABELS_TRANSPORT_TO,
   TRANSPORT_MODE_RADIO_ITEMS
 } from '../../constants/app';
+import { C6, C8, C9 } from '../../constants/colors';
 import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
@@ -127,7 +128,7 @@ export default AddTravelRecord;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: C6
   },
   scrollView: {
     paddingHorizontal: 12
@@ -136,11 +137,11 @@ const styles = StyleSheet.create({
     marginTop: 24
   },
   label: {
-    color: '#979797'
+    color: C9
   },
   input: {
     fontSize: 18,
-    borderBottomColor: '#ddd',
+    borderBottomColor: C8,
     borderBottomWidth: 1,
     paddingBottom: 6
   },

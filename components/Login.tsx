@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber } from '../api/account';
+import { C10, C6, C7, C9 } from '../constants/colors';
 import { text } from '../util/translation';
 import Button from './common/Button';
 import WrappedText from './common/WrappedText';
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: C6
   },
   imageContainer: {
     marginTop: 72
@@ -87,13 +88,13 @@ const styles = StyleSheet.create({
     height: 128
   },
   text: {
-    color: '#393939',
+    color: C10,
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 12
   },
   subText: {
-    color: '#979797',
+    color: C9,
     fontSize: 12,
     lineHeight: 14,
     paddingHorizontal: '12%',
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     width: '75%'
   },
   inputFieldIcon: {
-    backgroundColor: '#ebebeb',
+    backgroundColor: C7,
     position: 'absolute',
     top: 9,
     left: 18
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
     fontSize: 21,
-    backgroundColor: '#ebebeb',
+    backgroundColor: C7,
     height: 48
   },
   buttonContainer: {

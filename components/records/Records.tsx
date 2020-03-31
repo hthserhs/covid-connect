@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { C6 } from '../../constants/colors';
 import FabActions from './FabActions';
 import RecordTile from './RecordTile';
 import { RecordsState } from './state/context';
@@ -29,7 +30,7 @@ const Records = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: C6
   }
 });
 

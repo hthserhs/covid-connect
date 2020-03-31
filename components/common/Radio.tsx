@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle
 } from 'react-native';
+import { C1, C6 } from '../../constants/colors';
 import WrappedText from './WrappedText';
 
 const BORDER_RADIUS = 3;
@@ -50,11 +51,11 @@ function Radio<T>(props: Props<T>) {
         if (item.value === value) {
           btnStyle = {
             ...btnStyle,
-            backgroundColor: 'rgb(0, 174, 239)'
+            backgroundColor: C1
           };
           txtStyle = {
             ...txtStyle,
-            color: 'rgb(255, 255, 255)'
+            color: C6
           };
         }
 
@@ -78,12 +79,12 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: 'rgb(0, 174, 239)',
+    borderColor: C1,
     borderWidth: 1,
     borderLeftWidth: 0
   },
   text: {
-    color: 'rgb(0, 174, 239)',
+    color: C1,
     fontWeight: 'bold',
     paddingHorizontal: 18,
     paddingVertical: 6

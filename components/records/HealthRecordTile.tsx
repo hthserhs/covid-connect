@@ -9,6 +9,7 @@ import {
   SEV_LEVEL_ORDER,
   SEV_LEVEL_SCORE
 } from '../../constants/app';
+import { C9 } from '../../constants/colors';
 import Label from '../common/Label';
 import WrappedText from '../common/WrappedText';
 import {
@@ -43,7 +44,7 @@ const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
     );
 
   let risk = userSymptoms.reduce((acc, s) => acc + SEV_LEVEL_SCORE[s.level], 0);
-  risk = Math.min(risk, 4);
+  risk = Math.min(risk, 3);
 
   return (
     <View style={styles.itemContainer}>
@@ -95,6 +96,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   date: {
-    color: '#979797'
+    color: C9
   }
 });

@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/core';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getProfile } from '../../api/user';
+import { C6 } from '../../constants/colors';
 import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
 import { readItem } from '../../storage/storage';
 import { UserProfile } from '../../store/types';
@@ -48,6 +49,6 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: C6
   }
 });
