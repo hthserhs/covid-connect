@@ -26,7 +26,7 @@ export enum SeverityLevel {
 
 export type ValueSeverityLevel = Exclude<
   SeverityLevel,
-  SeverityLevel.Unspecified
+  SeverityLevel.No | SeverityLevel.Unspecified
 >;
 
 export interface HealthRecord {

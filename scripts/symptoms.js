@@ -2,6 +2,14 @@ const axios = require('axios');
 
 const symptoms = [
   {
+    name: 'fever',
+    displayName: 'Fever'
+  },
+  {
+    name: 'dry-cough',
+    displayName: 'Dry Cough'
+  },
+  {
     name: 'sneezing',
     displayName: 'Sneezing'
   },

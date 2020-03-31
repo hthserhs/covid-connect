@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import WrappedText from '../common/WrappedText';
 
 const RecordDetails = () => {
   return (
     <View>
-      <Text></Text>
+      <WrappedText></WrappedText>
     </View>
   );
 };

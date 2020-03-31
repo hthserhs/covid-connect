@@ -1,14 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import { editProfile, getProfile } from '../../api/user';
+import { editProfile } from '../../api/user';
 import {
   CoMorbiditiesItemName,
   CovidRiskFactorItemName,
@@ -27,61 +21,91 @@ import { UserProfile } from '../../store/types';
 import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Tags from '../common/Tags';
+import WrappedText from '../common/WrappedText';
 import Personal from './Personal';
 import ProfileSection from './ProfileSection';
-import { PersonalFormValues } from './types';
+import Quarantine from './Quarantine';
+import { PersonalFormState, QuarantineFormState } from './types';
 
-const EditProfile = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile>(null);
+interface Props {
+  userProfile: UserProfile;
+}
+
+const EditProfile: FC<Props> = ({ userProfile }) => {
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(AppDispatch);
-
-  const [personalValues, setPersonalValues] = useState(
-    new PersonalFormValues()
+  const [personalValues, setPersonalValues] = useState(new PersonalFormState());
+  const [covidRiskFactors, setCovidRiskFactors] = useState<
+    CovidRiskFactorItemName[]
+  >([]);
+  const [coMorbidities, setCoMorbidities] = useState<CoMorbiditiesItemName[]>(
+    []
+  );
+  const [quarantineValues, setQuarantineValues] = useState(
+    new QuarantineFormState()
   );
 
   const disabled = false;
 
   useEffect(() => {
     if (userProfile) {
+      const {
+        firstName,
+        lastName,
+        gender,
+        dob,
+        pincode,
+        coMorbidities,
+        covidRiskFactors,
+        quarantineType,
+        quarantineStartDate,
+        quarantineEndDate
+      } = userProfile;
+
       setPersonalValues({
-        firstName: userProfile.firstName || '',
-        lastName: userProfile.lastName || '',
-        gender: userProfile.gender || '',
-        dob: userProfile.dob > 0 ? new Date(userProfile.dob) : null,
-        pincode: userProfile.pincode > 0 ? String(userProfile.pincode) : ''
+        firstName: firstName || '',
+        lastName: lastName || '',
+        gender: gender || '',
+        dob: dob > 0 ? new Date(dob) : null,
+        pincode: pincode > 0 ? String(pincode) : ''
       });
 
-      setCoMorbidities(userProfile.coMorbidities || []);
-      setCovidRiskFactors(userProfile.covidRiskFactors || []);
+      setCovidRiskFactors(covidRiskFactors || []);
+
+      setCoMorbidities(coMorbidities || []);
+
+      setQuarantineValues({
+        home: quarantineType === 'HOME',
+        completed: quarantineEndDate > 0,
+        start: quarantineStartDate > 0 ? new Date(quarantineStartDate) : null,
+        end: quarantineEndDate > 0 ? new Date(quarantineEndDate) : null
+      });
     }
   }, [userProfile]);
 
-  useEffect(() => {
-    Promise.all([readItem(AUTH_TOKEN), readItem(USER_ID)]).then(
-      ([authToken, userId]) => {
-        getProfile(authToken, userId).then(setUserProfile);
-      }
-    );
-  }, []);
-
   const onSubmit = () => {
-    const profile = {
+    const profile: UserProfile = {
       ...userProfile,
       firstName: personalValues.firstName,
       lastName: personalValues.lastName,
       gender: personalValues.gender,
-      dob: personalValues.dob.getTime(),
+      dob: personalValues.dob ? personalValues.dob.getTime() : 0,
       pincode: +personalValues.pincode,
       coMorbidities,
-      covidHistory: covidRiskFactors
+      covidRiskFactors,
+      quarantineType: quarantineValues.home ? 'HOME' : 'HOSPITAL',
+      quarantineStartDate: quarantineValues.start
+        ? quarantineValues.start.getTime()
+        : 0,
+      quarantineEndDate: quarantineValues.end
+        ? quarantineValues.end.getTime()
+        : 0
     };
 
     readItem(AUTH_TOKEN).then(authToken => {
       editProfile(authToken, profile)
         .then(async () => {
           await Promise.all([saveItem(IS_USER_PROFILE_COMPLETED, true)]);
-          setUserProfile(profile);
         })
         .then(() => {
           setAlert('Profile updated!');
@@ -97,10 +121,6 @@ const EditProfile = () => {
     dispatch(updateAuthToken(null));
   };
 
-  const [covidRiskFactors, setCovidRiskFactors] = useState<
-    CovidRiskFactorItemName[]
-  >([]);
-
   const toggleHistoryItem = (name: CovidRiskFactorItemName) => {
     const index = covidRiskFactors.indexOf(name);
     if (index >= 0) {
@@ -112,10 +132,6 @@ const EditProfile = () => {
       setCovidRiskFactors([...covidRiskFactors, name]);
     }
   };
-
-  const [coMorbidities, setCoMorbidities] = useState<CoMorbiditiesItemName[]>(
-    []
-  );
 
   const toggleCoMorbitiesItem = (name: CoMorbiditiesItemName) => {
     const index = coMorbidities.indexOf(name);
@@ -156,17 +172,23 @@ const EditProfile = () => {
               onToggle={toggleCoMorbitiesItem}
             />
           </ProfileSection>
+          <ProfileSection title="Quarantine Status">
+            <Quarantine
+              state={quarantineValues}
+              onChange={setQuarantineValues}
+            />
+          </ProfileSection>
           <TouchableHighlight
             style={{ alignItems: 'center', marginTop: 24, marginBottom: 24 }}
             onPress={onLogout}
           >
-            <Text
+            <WrappedText
               style={{
                 color: '#00AEEF'
               }}
             >
               Logout
-            </Text>
+            </WrappedText>
           </TouchableHighlight>
         </View>
         <Snackbar

@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import WrappedText from './common/WrappedText';
 
 interface Props {
   error?: boolean;
 }
 
-const SplashScreen: FC<Props> = ({ error }) => {
+const Activity: FC<Props> = ({ error }) => {
   return (
     <View style={styles.container}>
       {error ? (
-        <Text>An error occured!</Text>
+        <WrappedText>An error occured!</WrappedText>
       ) : (
         <ActivityIndicator size="large" color="rgb(0, 174, 239)" />
       )}
@@ -17,7 +18,7 @@ const SplashScreen: FC<Props> = ({ error }) => {
   );
 };
 
-export default SplashScreen;
+export default Activity;
 
 const styles = StyleSheet.create({
   container: {

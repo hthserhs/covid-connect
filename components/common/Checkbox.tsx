@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import {
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacity,
   View,
   ViewStyle
 } from 'react-native';
+import WrappedText from './WrappedText';
 
 const BORDER_RADIUS = 3;
 
@@ -57,7 +57,7 @@ const Checkbox: FC<Props> = ({ items, onToggle }) => {
 
         return (
           <TouchableOpacity style={btnStyle} onPress={() => onToggle(index)}>
-            <Text style={txtStyle}>{item.text}</Text>
+            <WrappedText style={txtStyle}>{item.text}</WrappedText>
           </TouchableOpacity>
         );
       })}

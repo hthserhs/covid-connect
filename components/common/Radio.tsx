@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacity,
   View,
   ViewStyle
 } from 'react-native';
+import WrappedText from './WrappedText';
 
 const BORDER_RADIUS = 3;
 
@@ -64,7 +64,7 @@ function Radio<T>(props: Props<T>) {
             style={btnStyle}
             onPress={() => onValue(item.value)}
           >
-            <Text style={txtStyle}>{item.text}</Text>
+            <WrappedText style={txtStyle}>{item.text}</WrappedText>
           </TouchableOpacity>
         );
       })}

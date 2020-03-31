@@ -1,12 +1,15 @@
 import { useNavigation } from '@react-navigation/core';
 import nanoid from 'nanoid/non-secure';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { addUserHealthRecord } from '../../api/user';
 import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
 import { readItem } from '../../storage/storage';
 import Button from '../common/Button';
+import DateTime from '../common/DateTime';
+import WrappedText from '../common/WrappedText';
 import { addHealthRecord } from './state/actions';
 import { RecordsDispatch, RecordsState } from './state/context';
 import { HealthRecord, SeverityLevel } from './state/types';
@@ -14,6 +17,8 @@ import Symptom from './Symptom';
 
 const AddHealthRecord = () => {
   const navigation = useNavigation();
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
   const [levels, setLevels] = useState<SeverityLevel[]>([]);
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(RecordsDispatch);
@@ -34,9 +39,18 @@ const AddHealthRecord = () => {
       level
     }));
 
+    const recordDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.getHours(),
+      time.getMinutes(),
+      time.getSeconds()
+    );
+
     const record: HealthRecord = {
       id: nanoid(),
-      date: Date.now(),
+      date: recordDate.getTime(),
       symptoms: recSymptoms,
       type: 'health'
     };
@@ -46,14 +60,7 @@ const AddHealthRecord = () => {
         return addUserHealthRecord(authToken, userId, record);
       })
       .then(() => {
-        dispatch(
-          addHealthRecord({
-            id: nanoid(),
-            date: Date.now(),
-            symptoms: recSymptoms,
-            type: 'health'
-          })
-        );
+        dispatch(addHealthRecord(record));
 
         setLevels(symptoms.map(_ => SeverityLevel.Unspecified));
         navigation.navigate('RecordList');
@@ -66,23 +73,43 @@ const AddHealthRecord = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
+      <ScrollView>
+        <View style={{ alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ padding: 12, alignItems: 'center' }}>
+              <WrappedText>Date</WrappedText>
+              <DateTime value={date} onChange={setDate} />
+            </View>
+            <View style={{ padding: 12, alignItems: 'center' }}>
+              <WrappedText>Time</WrappedText>
+              <DateTime value={time} onChange={setTime} mode="time" />
+            </View>
+          </View>
+          {symptoms.map((symptom, index) => {
+            return (
+              <View
+                key={symptom.name}
+                style={{ marginBottom: index === symptoms.length - 1 ? 24 : 0 }}
+              >
+                <Symptom
+                  name={symptom.displayName}
+                  level={levels[index]}
+                  onChangeSeverityLevel={level =>
+                    onChangeSeverityLevel(index, level)
+                  }
+                />
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
+      {/* <FlatList
         data={symptoms}
         renderItem={({ item, index }) => (
-          <View
-            style={{ marginBottom: index === symptoms.length - 1 ? 24 : 0 }}
-          >
-            <Symptom
-              name={item.displayName}
-              level={levels[index]}
-              onChangeSeverityLevel={level =>
-                onChangeSeverityLevel(index, level)
-              }
-            />
-          </View>
+
         )}
         keyExtractor={(_, index) => String(index)}
-      />
+      /> */}
       <Snackbar
         visible={alert}
         onDismiss={() => setAlert(null)}
@@ -99,7 +126,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
-  }
+  },
+  field: {
+    marginHorizontal: 24
+  },
+  label: {
+    color: '#979797'
+  },
+  input: {
+    fontSize: 18,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+    paddingBottom: 6
+  },
+  date: { fontSize: 18 }
 });
 
 export default AddHealthRecord;

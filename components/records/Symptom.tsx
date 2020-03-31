@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   SEV_LEVEL_COLORS,
   SEV_LEVEL_ORDER,
   SEV_LEVEL_TEXTS
 } from '../../constants/app';
 import Severity from '../common/Severity';
+import WrappedText from '../common/WrappedText';
 import { SeverityLevel, SeverityLevelItem } from './state/types';
 
 interface Props {
@@ -14,18 +15,16 @@ interface Props {
   onChangeSeverityLevel: (level: SeverityLevel) => void;
 }
 
-const Symptom: FC<Props> = ({
-  name,
-  level,
-  onChangeSeverityLevel: onChangeSeverityLevel
-}) => {
+const Symptom: FC<Props> = ({ name, level, onChangeSeverityLevel }) => {
   const levels = SEV_LEVEL_ORDER.map<SeverityLevelItem>(l => ({
     text: SEV_LEVEL_TEXTS[l],
     color: SEV_LEVEL_COLORS[l]
   }));
 
   const current =
-    level === SeverityLevel.Unspecified ? -1 : SEV_LEVEL_ORDER.indexOf(level);
+    level === SeverityLevel.Unspecified || level === SeverityLevel.No
+      ? -1
+      : SEV_LEVEL_ORDER.indexOf(level);
 
   const onChangeLevel = (index: number) => {
     onChangeSeverityLevel(
@@ -35,9 +34,11 @@ const Symptom: FC<Props> = ({
 
   return (
     <View style={{ alignItems: 'center', marginTop: 24 }}>
-      <Text style={{ fontSize: 21, marginBottom: 12, fontWeight: 'bold' }}>
+      <WrappedText
+        style={{ fontSize: 21, marginBottom: 12, fontWeight: 'bold' }}
+      >
         {name}
-      </Text>
+      </WrappedText>
       <Severity levels={levels} current={current} onChange={onChangeLevel} />
     </View>
   );

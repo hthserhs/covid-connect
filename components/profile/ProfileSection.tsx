@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import WrappedText from '../common/WrappedText';
 
 interface Props {
   title: string;
@@ -8,7 +9,7 @@ interface Props {
 const ProfileSection: FC<Props> = ({ title, children }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <WrappedText style={styles.title}>{title}</WrappedText>
       <View style={styles.content}>{children}</View>
     </View>
   );

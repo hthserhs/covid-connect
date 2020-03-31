@@ -1,7 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RECORD_ICON_COLORS, TRANSPORT_MODE_ICONS } from '../../constants/app';
+import WrappedText from '../common/WrappedText';
 import { TravelRecord } from './state/types';
 
 interface Props {
@@ -21,20 +22,22 @@ const TravelRecordTile: FC<Props> = ({ record }) => {
         />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
+        <WrappedText style={styles.date}>
+          {new Date(date).toLocaleString()}
+        </WrappedText>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center'
           }}
         >
-          <Text style={styles.location}>{from}</Text>
-          <Text style={styles.seperator}>
+          <WrappedText style={styles.location}>{from}</WrappedText>
+          <WrappedText style={styles.seperator}>
             <MaterialCommunityIcons name="arrow-right" size={24} />
-          </Text>
-          <Text style={styles.location}>{to}</Text>
-          <Text style={styles.seperator}>∕</Text>
-          <Text style={styles.id}>{transportId}</Text>
+          </WrappedText>
+          <WrappedText style={styles.location}>{to}</WrappedText>
+          <WrappedText style={styles.seperator}>∕</WrappedText>
+          <WrappedText style={styles.id}>{transportId}</WrappedText>
         </View>
       </View>
     </View>

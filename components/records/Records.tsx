@@ -14,8 +14,10 @@ const Records = () => {
     <View style={styles.container}>
       <FlatList
         data={data}
-        renderItem={({ item }) => (
-          <RecordTile record={item} symptoms={symptoms} />
+        renderItem={({ item, index }) => (
+          <View style={{ marginBottom: index === data.length - 1 ? 24 : 0 }}>
+            <RecordTile record={item} symptoms={symptoms} />
+          </View>
         )}
         keyExtractor={item => item.id}
       />

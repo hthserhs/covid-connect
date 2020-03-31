@@ -4,7 +4,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -19,6 +18,7 @@ import { text } from '../../util/translation';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
+import WrappedText from '../common/WrappedText';
 import { addTravelRecord } from './state/actions';
 import { RecordsDispatch } from './state/context';
 import { TransportMode } from './state/types';
@@ -72,7 +72,7 @@ const AddTravelRecord = () => {
           />
         </View>
         <View style={styles.field}>
-          <Text style={styles.label}>{text('date')}</Text>
+          <WrappedText style={styles.label}>{text('date')}</WrappedText>
           <TouchableOpacity
             style={styles.input}
             onPress={() => {
@@ -80,27 +80,35 @@ const AddTravelRecord = () => {
               setShow(true);
             }}
           >
-            <Text style={styles.date}>{date.toLocaleDateString()}</Text>
+            <WrappedText style={styles.date}>
+              {date.toLocaleDateString()}
+            </WrappedText>
           </TouchableOpacity>
           {show && (
             <DateTimePicker value={date} mode="date" onChange={onChange} />
           )}
         </View>
-        <Input
-          value={fromLocation}
-          onChangeValue={setFromLocation}
-          labelKey={LABELS_TRANSPORT_FROM[transportMode]}
-        />
-        <Input
-          value={toLocation}
-          onChangeValue={setToLocation}
-          labelKey={LABELS_TRANSPORT_TO[transportMode]}
-        />
-        <Input
-          value={transportId}
-          onChangeValue={setTransportId}
-          labelKey={LABELS_TRANSPORT_ID[transportMode]}
-        />
+        <View style={styles.field}>
+          <Input
+            value={fromLocation}
+            onChangeValue={setFromLocation}
+            labelKey={LABELS_TRANSPORT_FROM[transportMode]}
+          />
+        </View>
+        <View style={styles.field}>
+          <Input
+            value={toLocation}
+            onChangeValue={setToLocation}
+            labelKey={LABELS_TRANSPORT_TO[transportMode]}
+          />
+        </View>
+        <View style={styles.field}>
+          <Input
+            value={transportId}
+            onChangeValue={setTransportId}
+            labelKey={LABELS_TRANSPORT_ID[transportMode]}
+          />
+        </View>
       </ScrollView>
       <Snackbar
         visible={alert}

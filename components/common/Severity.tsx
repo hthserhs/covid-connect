@@ -1,8 +1,9 @@
 import { color } from 'd3-color';
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SeverityLevelItem } from '../../store/types';
+import { SeverityLevelItem } from '../records/state/types';
+import WrappedText from './WrappedText';
 
 const BORDER_RADIUS = 30;
 
@@ -37,7 +38,7 @@ const Severity: FC<Props> = ({ levels, current, onChange }) => {
                   index === levels.length - 1 ? BORDER_RADIUS : 0
               }}
             >
-              <Text>{text}</Text>
+              <WrappedText>{text}</WrappedText>
             </View>
           </TouchableOpacity>
         );

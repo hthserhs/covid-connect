@@ -28,4 +28,7 @@ export interface UserProfile {
   transmissionType: string;
   coMorbidities: CoMorbiditiesItemName[];
   covidRiskFactors: CovidRiskFactorItemName[];
+  quarantineEndDate: number;
+  quarantineStartDate: number;
+  quarantineType: 'HOME' | 'HOSPITAL';
 }

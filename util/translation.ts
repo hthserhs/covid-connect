@@ -23,7 +23,7 @@ const en = {
   transport_id: 'Transport Details',
   error_generic: 'An error occurred!',
   error_otp_validation_failed: 'OTP validation failed!',
-  verify_mobile: 'Verify your mobile number!',
+  verify_mobile: 'Verify your mobile number',
   enter_otp: 'Enter the one time password (OTP) sent to your mobile number.',
   placeholder_enter_otp: '6 digit OTP',
   btn_submit: 'Submit',

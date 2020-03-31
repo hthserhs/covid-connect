@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
-import {
-  KeyboardTypeOptions,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
+import { KeyboardTypeOptions, StyleSheet, TextInput, View } from 'react-native';
 import { text, TextKey } from '../../util/translation';
+import WrappedText from './WrappedText';
 
 interface Props {
   value: string;
@@ -23,7 +18,9 @@ const Input: FC<Props> = ({
 }) => {
   return (
     <View style={styles.field}>
-      {labelKey ? <Text style={styles.label}>{text(labelKey)}</Text> : null}
+      {labelKey ? (
+        <WrappedText style={styles.label}>{text(labelKey)}</WrappedText>
+      ) : null}
       <TextInput
         style={styles.input}
         value={value}
@@ -37,9 +34,7 @@ const Input: FC<Props> = ({
 export default Input;
 
 const styles = StyleSheet.create({
-  field: {
-    marginTop: 24
-  },
+  field: {},
   input: {
     fontSize: 18,
     borderBottomColor: '#ddd',
@@ -47,6 +42,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6
   },
   label: {
-    color: '#979797'
+    color: '#979797',
+    fontSize: 16
   }
 });

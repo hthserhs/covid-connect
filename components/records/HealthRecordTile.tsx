@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { APISymptom } from '../../api/types';
 import {
   RECORD_ICONS,
@@ -10,6 +10,7 @@ import {
   SEV_LEVEL_SCORE
 } from '../../constants/app';
 import Label from '../common/Label';
+import WrappedText from '../common/WrappedText';
 import {
   HealthRecord,
   RecordSymptom,
@@ -22,20 +23,23 @@ interface Props {
   symptoms: APISymptom[];
 }
 
-function isValueSeverityLevel(
+const NON_SEVERITY_LEVELS = [SeverityLevel.Unspecified, SeverityLevel.No];
+
+function hasSeverity(
   s: RecordSymptom<SeverityLevel>
 ): s is RecordSymptom<ValueSeverityLevel> {
-  return s.level !== SeverityLevel.Unspecified;
+  return !NON_SEVERITY_LEVELS.includes(s.level);
 }
 
 const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
   const { date, symptoms: allUserSymptoms } = record;
 
   const userSymptoms = allUserSymptoms
-    .filter<RecordSymptom<ValueSeverityLevel>>(isValueSeverityLevel)
-    .sort(
-      (a, b) =>
-        SEV_LEVEL_ORDER.indexOf(b.level) - SEV_LEVEL_ORDER.indexOf(a.level)
+    .filter<RecordSymptom<ValueSeverityLevel>>(hasSeverity)
+    .sort((a, b) =>
+      a.level !== b.level
+        ? SEV_LEVEL_ORDER.indexOf(b.level) - SEV_LEVEL_ORDER.indexOf(a.level)
+        : a.name.localeCompare(b.name)
     );
 
   let risk = userSymptoms.reduce((acc, s) => acc + SEV_LEVEL_SCORE[s.level], 0);
@@ -51,7 +55,9 @@ const HealthRecordTile: FC<Props> = ({ record, symptoms }) => {
         />
       </View>
       <View>
-        <Text style={styles.date}>{new Date(date).toLocaleString()}</Text>
+        <WrappedText style={styles.date}>
+          {new Date(date).toLocaleString()}
+        </WrappedText>
         <View
           style={{
             flexDirection: 'row',

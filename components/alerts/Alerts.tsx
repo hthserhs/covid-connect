@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import WrappedText from '../common/WrappedText';
 
 const Alerts = () => {
   return (
     <View style={styles.container}>
-      <Text>You don't have any alerts!</Text>
+      <WrappedText>You don't have any alerts!</WrappedText>
     </View>
   );
 };

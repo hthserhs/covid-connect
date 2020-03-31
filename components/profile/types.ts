@@ -1,6 +1,6 @@
 import {} from '../../constants/app';
 
-export class PersonalFormValues {
+export class PersonalFormState {
   firstName: string;
   lastName: string;
   gender: string;
@@ -13,5 +13,19 @@ export class PersonalFormValues {
     this.gender = '';
     this.dob = null;
     this.pincode = '';
+  }
+}
+
+export class QuarantineFormState {
+  home: boolean;
+  completed: boolean;
+  start: null | Date;
+  end: null | Date;
+
+  constructor() {
+    this.home = true;
+    this.completed = false;
+    this.start = null;
+    this.end = null;
   }
 }

@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber, validateOtp } from '../api/account';
@@ -14,6 +14,7 @@ import { updateAuthToken } from '../store/actions';
 import { AppDispatch } from '../store/context';
 import { text } from '../util/translation';
 import Button from './common/Button';
+import WrappedText from './common/WrappedText';
 import { RootStackParamList } from './RootNavigator';
 
 type VerifyScreenRouteProp = RouteProp<RootStackParamList, 'Verify'>;
@@ -49,7 +50,7 @@ const Verify = () => {
           await Promise.all([
             saveItem(USER_ID, response.patient.id),
             saveItem(AUTH_TOKEN, response.authToken),
-            saveItem(IS_USER_PROFILE_COMPLETED, !response.isNewUser)
+            saveItem(IS_USER_PROFILE_COMPLETED, false)
           ]);
           dispatch(updateAuthToken(response.authToken));
         } catch {
@@ -67,8 +68,8 @@ const Verify = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{text('verify_mobile')}</Text>
-      <Text style={styles.subText}>{text('enter_otp')}</Text>
+      <WrappedText style={styles.text}>{text('verify_mobile')}</WrappedText>
+      <WrappedText style={styles.subText}>{text('enter_otp')}</WrappedText>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
@@ -88,13 +89,15 @@ const Verify = () => {
         />
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.subTextOtp}>{text('otp_not_received')}</Text>
+        <WrappedText style={styles.subTextOtp}>
+          {text('otp_not_received')}{' '}
+        </WrappedText>
         <TouchableOpacity onPress={onResendOtp}>
-          <Text style={{ ...styles.subTextOtp, color: '#00AEEF' }}>
+          <WrappedText style={{ ...styles.subTextOtp, color: '#00AEEF' }}>
             {text('otp_resend')}
-          </Text>
+          </WrappedText>
         </TouchableOpacity>
-        <Text style={styles.subTextOtp}>.</Text>
+        <WrappedText style={styles.subTextOtp}>.</WrappedText>
       </View>
       <View style={styles.buttonOutlineContainer}>
         <Button
@@ -124,13 +127,12 @@ const styles = StyleSheet.create({
     color: '#393939',
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 180
+    marginTop: 72
   },
   subText: {
     color: '#979797',
     fontSize: 12,
     lineHeight: 14,
-    fontWeight: 'normal',
     paddingHorizontal: '12%',
     marginTop: 12,
     textAlign: 'center'
@@ -152,7 +154,6 @@ const styles = StyleSheet.create({
   subTextOtp: {
     color: '#979797',
     fontSize: 12,
-    fontWeight: 'normal',
     marginTop: 24,
     textAlign: 'center'
   },

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextStyle, TouchableOpacity } from 'react-native';
+import WrappedText from './WrappedText';
 
 interface Props {
   text: string;
@@ -8,9 +9,15 @@ interface Props {
 }
 
 const Tag: FC<Props> = ({ text, selected, onToggle }) => {
+  let textStyle: TextStyle = styles.base;
+
+  if (selected) {
+    textStyle = { ...textStyle, ...styles.selected };
+  }
+
   return (
     <TouchableOpacity onPress={onToggle}>
-      <Text style={[styles.base, selected ? styles.selected : {}]}>{text}</Text>
+      <WrappedText style={textStyle}>{text}</WrappedText>
     </TouchableOpacity>
   );
 };
@@ -22,7 +29,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingHorizontal: 18,
     paddingVertical: 6,
-    fontWeight: 'bold',
     color: '#3A4249',
     backgroundColor: '#E5E5E5'
   },

@@ -1,11 +1,12 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React, { useRef, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { sendOtpToNumber } from '../api/account';
 import { text } from '../util/translation';
 import Button from './common/Button';
+import WrappedText from './common/WrappedText';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -33,8 +34,10 @@ const Login = () => {
       <View style={styles.imageContainer}>
         <Image source={require('../assets/doc.png')} style={styles.image} />
       </View>
-      <Text style={styles.text}>{text('msg_primary_home')}</Text>
-      <Text style={styles.subText}>{text('msg_secondary_home')}</Text>
+      <WrappedText style={styles.text}>{text('msg_primary_home')}</WrappedText>
+      <WrappedText style={styles.subText}>
+        {text('msg_secondary_home')}
+      </WrappedText>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   imageContainer: {
-    marginTop: 144
+    marginTop: 72
   },
   image: {
     width: 128,
@@ -93,13 +96,12 @@ const styles = StyleSheet.create({
     color: '#979797',
     fontSize: 12,
     lineHeight: 14,
-    fontWeight: 'normal',
     paddingHorizontal: '12%',
     marginTop: 12,
     textAlign: 'center'
   },
   inputContainer: {
-    marginTop: 76,
+    marginTop: 48,
     width: '75%'
   },
   inputFieldIcon: {

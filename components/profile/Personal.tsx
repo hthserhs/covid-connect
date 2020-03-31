@@ -1,16 +1,17 @@
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import React, { FC, useState } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DEFAULT_DATE, GENDER_RADIO_ITEMS } from '../../constants/app';
 import { text } from '../../util/translation';
 import Input from '../common/Input';
 import Radio from '../common/Radio';
-import { PersonalFormValues } from './types';
+import WrappedText from '../common/WrappedText';
+import { PersonalFormState } from './types';
 
 interface Props {
-  values: PersonalFormValues;
-  onChangeValues: (values: PersonalFormValues) => void;
+  values: PersonalFormState;
+  onChangeValues: (values: PersonalFormState) => void;
 }
 
 const Personal: FC<Props> = props => {
@@ -39,18 +40,22 @@ const Personal: FC<Props> = props => {
 
   return (
     <View>
-      <Input
-        value={firstName}
-        onChangeValue={onChangeFirstName}
-        labelKey="first_name"
-      />
-      <Input
-        value={lastName}
-        onChangeValue={onChangeLastName}
-        labelKey="last_name"
-      />
       <View style={styles.field}>
-        <Text style={styles.label}>{text('gender')}</Text>
+        <Input
+          value={firstName}
+          onChangeValue={onChangeFirstName}
+          labelKey="first_name"
+        />
+      </View>
+      <View style={styles.field}>
+        <Input
+          value={lastName}
+          onChangeValue={onChangeLastName}
+          labelKey="last_name"
+        />
+      </View>
+      <View style={styles.field}>
+        <WrappedText style={styles.label}>{text('gender')}</WrappedText>
         <View style={{ marginTop: 6 }}>
           <Radio
             items={GENDER_RADIO_ITEMS}
@@ -60,7 +65,7 @@ const Personal: FC<Props> = props => {
         </View>
       </View>
       <View style={styles.field}>
-        <Text style={styles.label}>{text('dob')}</Text>
+        <WrappedText style={styles.label}>{text('dob')}</WrappedText>
         <TouchableOpacity
           style={styles.input}
           onPress={() => {
@@ -68,7 +73,9 @@ const Personal: FC<Props> = props => {
             setShowPicker(true);
           }}
         >
-          <Text style={styles.date}>{dob ? dob.toLocaleDateString() : ''}</Text>
+          <WrappedText style={styles.date}>
+            {dob ? dob.toLocaleDateString() : ''}
+          </WrappedText>
         </TouchableOpacity>
         {showPicker && (
           <DateTimePicker
@@ -93,7 +100,7 @@ export default Personal;
 
 const styles = StyleSheet.create({
   field: {
-    marginTop: 24
+    marginBottom: 24
   },
   input: {
     fontSize: 18,
@@ -102,7 +109,8 @@ const styles = StyleSheet.create({
     paddingBottom: 6
   },
   label: {
-    color: '#979797'
+    color: '#979797',
+    fontSize: 16
   },
   date: { fontSize: 18 }
 });

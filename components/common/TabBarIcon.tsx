@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import colors from '../../constants/colors';
 
@@ -9,10 +9,9 @@ interface Props {
 
 const TabBarIcon: FC<Props> = props => {
   return (
-    <Ionicons
+    <FontAwesome5
       name={props.name}
       size={30}
-      style={{ marginBottom: -3 }}
       color={props.focused ? colors.tabIconSelected : colors.tabIconDefault}
     />
   );

@@ -1,6 +1,7 @@
 import { interpolateHslLong, quantize } from 'd3-interpolate';
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import WrappedText from './WrappedText';
 
 const COLOR_DEFAULT = '#ddd';
 
@@ -28,7 +29,7 @@ const Meter: FC<Props> = ({ max, current, size = 10, vertical = false }) => {
         .fill(null)
         .map((_, i) => {
           return (
-            <Text
+            <WrappedText
               key={i}
               style={{
                 color: i < current ? colors[i] : COLOR_DEFAULT,
@@ -37,7 +38,7 @@ const Meter: FC<Props> = ({ max, current, size = 10, vertical = false }) => {
               }}
             >
               ⬤
-            </Text>
+            </WrappedText>
           );
         })}
     </View>

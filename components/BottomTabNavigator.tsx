@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect } from 'react';
 import { IS_USER_PROFILE_COMPLETED } from '../storage/keys';
 import { readItem } from '../storage/storage';
-import AlertsNavigator from './alerts/AlertsNavigator';
 import TabBarIcon from './common/TabBarIcon';
 import ProfileNavigator from './profile/ProfileNavigator';
 import RecordsNavigator from './records/RecordsNavigator';
@@ -34,11 +33,11 @@ const BottomTabNavigator = () => {
         component={RecordsNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-folder" />
+            <TabBarIcon focused={focused} name="notes-medical" />
           )
         }}
       />
-      <Screen
+      {/* <Screen
         name="Alerts"
         component={AlertsNavigator}
         options={{
@@ -46,13 +45,13 @@ const BottomTabNavigator = () => {
             <TabBarIcon focused={focused} name="md-alert" />
           )
         }}
-      />
+      /> */}
       <Screen
         name="Profile"
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="user-alt" />
           )
         }}
       />

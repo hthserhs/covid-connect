@@ -19,7 +19,7 @@ export const SEV_LEVEL_TEXTS = {
   [SeverityLevel.No]: 'No',
   [SeverityLevel.Low]: 'Low',
   [SeverityLevel.Mild]: 'Mild',
-  [SeverityLevel.High]: 'High'
+  [SeverityLevel.High]: 'Severe'
 };
 
 export const SEV_LEVEL_COLORS = {
@@ -30,7 +30,6 @@ export const SEV_LEVEL_COLORS = {
 };
 
 export const SEV_LEVEL_ORDER: ValueSeverityLevel[] = [
-  SeverityLevel.No,
   SeverityLevel.Low,
   SeverityLevel.Mild,
   SeverityLevel.High

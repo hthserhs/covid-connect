@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import {
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacity,
   ViewStyle
 } from 'react-native';
+import WrappedText from './WrappedText';
 
 interface Props {
   text: string;
@@ -42,7 +42,7 @@ const Button: FC<Props> = ({
 
   return (
     <TouchableOpacity style={btnStyle} onPress={onPress} disabled={disabled}>
-      <Text style={txtStyle}>{text}</Text>
+      <WrappedText style={txtStyle}>{text}</WrappedText>
     </TouchableOpacity>
   );
 };

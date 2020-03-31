@@ -1,7 +1,8 @@
 import { color } from 'd3-color';
 import { interpolateHslLong, quantize } from 'd3-interpolate';
 import React, { FC } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import WrappedText from './WrappedText';
 
 interface Props {
   text: string;
@@ -25,7 +26,7 @@ const Label: FC<Props> = ({ text, levels = 10, current, levelColors }) => {
     backgroundColor: backgroundColor.toString()
   };
 
-  return <Text style={style}>{text}</Text>;
+  return <WrappedText style={style}>{text}</WrappedText>;
 };
 
 export default Label;
