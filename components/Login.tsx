@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../assets/doc.png')} style={styles.image} />
+        <Image source={require('../assets/icon.png')} style={styles.image} />
       </View>
       <WrappedText style={styles.text}>{text('msg_primary_home')}</WrappedText>
       <WrappedText style={styles.subText}>

@@ -32,9 +32,9 @@ const en = {
   btn_change_mobile_number: 'Change Mobile Number',
   msg_otp_sent: 'OTP sent!',
   error_otp_not_sent: 'OTP could not be sent!',
-  msg_primary_home: 'Be safe. Stay safe.',
+  msg_primary_home: 'Take control of your health',
   msg_secondary_home:
-    'Record your symptoms and be notified of recommendations from your healthcare providers.',
+    'Report your symptoms and let us monitor your health and keep a virtual eye on you',
   placeholder_enter_mobile: '10 digit mobile number',
   btn_request_otp: 'Request OTP'
 };
