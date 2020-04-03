@@ -28,5 +28,6 @@
     },
     "description": "",
     "githubUrl": "https://github.com/hthserhs/covid-connect"
-  }
+  },
+  "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
 }
