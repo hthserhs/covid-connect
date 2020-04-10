@@ -24,12 +24,10 @@
     },
     "android": {
       "package": "com.embryyo.covidconnect",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "description": "",
     "githubUrl": "https://github.com/hthserhs/covid-connect"
-  },
-  "android": {
-    "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
   }
 }
