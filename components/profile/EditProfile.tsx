@@ -60,7 +60,8 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
         covidRiskFactors,
         quarantineType,
         quarantineStartDate,
-        quarantineEndDate
+        quarantineEndDate,
+        locationId
       } = userProfile;
 
       setPersonalValues({
@@ -79,7 +80,8 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
         home: quarantineType === 'HOME',
         completed: quarantineEndDate > 0,
         start: quarantineStartDate > 0 ? new Date(quarantineStartDate) : null,
-        end: quarantineEndDate > 0 ? new Date(quarantineEndDate) : null
+        end: quarantineEndDate > 0 ? new Date(quarantineEndDate) : null,
+        locationId
       });
     }
   }, [userProfile]);
@@ -100,10 +102,11 @@ const EditProfile: FC<Props> = ({ userProfile }) => {
         : 0,
       quarantineEndDate: quarantineValues.end
         ? quarantineValues.end.getTime()
-        : 0
+        : 0,
+      locationId: quarantineValues.locationId
     };
 
-    readItem(AUTH_TOKEN).then(authToken => {
+    readItem(AUTH_TOKEN).then((authToken) => {
       editProfile(authToken, profile)
         .then(async () => {
           await Promise.all([saveItem(IS_USER_PROFILE_COMPLETED, true)]);

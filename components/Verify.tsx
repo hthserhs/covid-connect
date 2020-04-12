@@ -46,7 +46,7 @@ const Verify = () => {
 
   const onValidateOtp = () => {
     validateOtp(route.params.mobileNumber, otp)
-      .then(async response => {
+      .then(async (response) => {
         try {
           await Promise.all([
             saveItem(USER_ID, response.patient.id),

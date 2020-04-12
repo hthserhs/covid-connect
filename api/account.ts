@@ -5,7 +5,8 @@ import { ValidateOtpResponse } from './types';
 export async function sendOtpToNumber(number: string) {
   await api('otp', {
     params: {
-      number
+      number,
+      role: 'Patient'
     }
   });
 }
@@ -14,10 +15,12 @@ export async function validateOtp(number: string, otp: string) {
   return api
     .post<ValidateOtpResponse>('login', {
       number,
-      otp
+      otp,
+      role: 'Patient'
     })
-    .then(res => res.data)
-    .catch(() => {
+    .then((res) => res.data)
+    .catch((e) => {
+      console.log(e.response);
       throw Error(text('error_otp_validation_failed'));
     });
 }

@@ -21,11 +21,13 @@ export class QuarantineFormState {
   completed: boolean;
   start: null | Date;
   end: null | Date;
+  locationId: number;
 
   constructor() {
     this.home = true;
     this.completed = false;
     this.start = null;
     this.end = null;
+    this.locationId = 0;
   }
 }

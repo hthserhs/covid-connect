@@ -31,4 +31,5 @@ export interface UserProfile {
   quarantineEndDate: number;
   quarantineStartDate: number;
   quarantineType: 'HOME' | 'HOSPITAL';
+  locationId: number;
 }

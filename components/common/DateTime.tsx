@@ -50,7 +50,5 @@ const DateTime: FC<Props> = ({ value, onChange, mode = 'date' }) => {
 export default DateTime;
 
 const styles = StyleSheet.create({
-  date: {
-    fontSize: 18
-  }
+  date: {}
 });
