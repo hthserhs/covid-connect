@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-  SEV_LEVEL_COLORS,
-  SEV_LEVEL_ORDER,
-  SEV_LEVEL_TEXTS
-} from '../../constants/app';
+import { SEV_LEVEL_COLORS, SEV_LEVEL_ORDER, SEV_LEVEL_TEXTS } from '../../constants/app';
 import Severity from '../common/Severity';
 import WrappedText from '../common/WrappedText';
 import { SeverityLevel, SeverityLevelItem } from './state/types';
@@ -13,16 +9,17 @@ interface Props {
   name: string;
   level: SeverityLevel;
   onChangeSeverityLevel: (level: SeverityLevel) => void;
+  isSeverityDisabled: boolean
 }
 
-const Symptom: FC<Props> = ({ name, level, onChangeSeverityLevel }) => {
+const Symptom: FC<Props> = ({ name, level, onChangeSeverityLevel, isSeverityDisabled }) => {
   const levels = SEV_LEVEL_ORDER.map<SeverityLevelItem>(l => ({
     text: SEV_LEVEL_TEXTS[l],
-    color: SEV_LEVEL_COLORS[l]
+    color: isSeverityDisabled ? SEV_LEVEL_COLORS[SeverityLevel.Unspecified] : SEV_LEVEL_COLORS[l]
   }));
 
   const current =
-    level === SeverityLevel.Unspecified || level === SeverityLevel.No
+    level === SeverityLevel.Unspecified
       ? -1
       : SEV_LEVEL_ORDER.indexOf(level);
 
@@ -39,7 +36,7 @@ const Symptom: FC<Props> = ({ name, level, onChangeSeverityLevel }) => {
       >
         {name}
       </WrappedText>
-      <Severity levels={levels} current={current} onChange={onChangeLevel} />
+      <Severity levels={levels} current={current} onChange={onChangeLevel} isDisabled={isSeverityDisabled} />
     </View>
   );
 };

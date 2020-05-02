@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/core';
 import nanoid from 'nanoid/non-secure';
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Snackbar } from 'react-native-paper';
+import { APISymptom } from '../../api/types';
 import { addUserHealthRecord } from '../../api/user';
-import { C6, C8, C9 } from '../../constants/colors';
+import { C12, C13, C6, C8, C9 } from '../../constants/colors';
 import { AUTH_TOKEN, USER_ID } from '../../storage/keys';
 import { readItem } from '../../storage/storage';
 import Button from '../common/Button';
@@ -24,13 +25,42 @@ const AddHealthRecord = () => {
   const [alert, setAlert] = useState(null);
   const dispatch = useContext(RecordsDispatch);
   const { symptoms } = useContext(RecordsState);
-
+  const [isSeverityDisabled, setSeverityDisabled] = useState(false);
+  const [customBtnStyle, setCustomBtnStyle] = useState<ViewStyle>({
+    borderRadius: 10,
+    width: 200,
+    backgroundColor: C13,
+    margin: 25
+  });
   const onChangeSeverityLevel = (index: number, level: SeverityLevel) => {
     setLevels([...levels.slice(0, index), level, ...levels.slice(index + 1)]);
   };
 
+  const noSymptomsClicked = () => {
+    if(!isSeverityDisabled){
+      customBtnStyle['backgroundColor'] = C12;
+      setLevels(symptoms.map((v: APISymptom, index)=>{ 
+        if(index == levels.length-1) return SeverityLevel.No 
+        else return SeverityLevel.Unspecified 
+      }));
+      setSeverityDisabled(true);
+
+    } else{
+      customBtnStyle['backgroundColor'] = C13;
+      setSeverityDisabled(false);
+      setLevels(levels.map(_ => SeverityLevel.Unspecified));
+    }
+  };
+
+  const renderNoSymptoms = (symptoms: APISymptom[]) => {
+    let noSymptoms = symptoms.find(e => e.name=="no-symptoms");
+    if(noSymptoms !== undefined && noSymptoms !== null){      
+      return <Button key={noSymptoms.name} text={noSymptoms.displayName} onPress={noSymptomsClicked} customBtnStyle={customBtnStyle}/>
+    }
+  }
+
   const onAddRecord = async () => {
-    if (levels.every(l => l === SeverityLevel.Unspecified)) {
+    if (!isSeverityDisabled && levels.every(l => l === SeverityLevel.Unspecified)) {
       setAlert('Select at least one symptom!');
       return;
     }
@@ -39,7 +69,7 @@ const AddHealthRecord = () => {
       name: symptoms[i].name,
       level
     }));
-
+    
     const recordDate = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -67,11 +97,11 @@ const AddHealthRecord = () => {
         navigation.navigate('RecordList');
       });
   };
-
   useEffect(() => {
+    
     setLevels(symptoms.map(_ => SeverityLevel.Unspecified));
-  }, [symptoms]);
-
+  }, []);
+  
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -86,22 +116,29 @@ const AddHealthRecord = () => {
               <DateTime value={time} onChange={setTime} mode="time" />
             </View>
           </View>
+          
           {symptoms.map((symptom, index) => {
-            return (
-              <View
-                key={symptom.name}
-                style={{ marginBottom: index === symptoms.length - 1 ? 24 : 0 }}
-              >
-                <Symptom
-                  name={symptom.displayName}
-                  level={levels[index]}
-                  onChangeSeverityLevel={level =>
-                    onChangeSeverityLevel(index, level)
-                  }
-                />
-              </View>
-            );
+            if(symptom.name !== "no-symptoms"){
+              return (
+                <View
+                  key={symptom.name}
+                  style={{ marginBottom: index === symptoms.length - 1 ? 24 : 0 }}
+                >
+                  <Symptom
+                    name={symptom.displayName}
+                    level={levels[index]}
+                    onChangeSeverityLevel={level =>
+                      onChangeSeverityLevel(index, level)
+                    }
+                    isSeverityDisabled={isSeverityDisabled}
+                  />
+                </View>
+              );
+            }
+            
           })}
+          {renderNoSymptoms(symptoms)}              
+          
         </View>
       </ScrollView>
       {/* <FlatList

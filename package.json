@@ -20,6 +20,7 @@
     "i18n-js": "^3.5.1",
     "nanoid": "^2.1.11",
     "react": "~16.9.0",
+    "react-devtools": "^3.6.3",
     "react-dom": "~16.9.0",
     "react-hook-form": "^5.1.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",

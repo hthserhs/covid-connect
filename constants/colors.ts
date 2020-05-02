@@ -9,3 +9,6 @@ export const C8 = '#dddddd'; // rgb(221, 221, 221)
 export const C9 = '#979797'; // rgb(151, 151, 151)
 export const C10 = '#393939'; // rgb(57, 57, 57)
 export const C11 = '#efbc2e'; // rgb(239, 188, 46) secondary
+export const C12 = '#3b5912'; //rgb(59, 89, 18) Dark Green
+export const C13 = '#9fcc60'; //rgb(159, 204, 96) Light Green
+

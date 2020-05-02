@@ -2,29 +2,18 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { APISymptom } from '../../api/types';
-import {
-  RECORD_ICONS,
-  RISK_COLORS,
-  SEV_LEVEL_COLORS,
-  SEV_LEVEL_ORDER,
-  SEV_LEVEL_SCORE
-} from '../../constants/app';
+import { RECORD_ICONS, RISK_COLORS, SEV_LEVEL_COLORS, SEV_LEVEL_ORDER, SEV_LEVEL_SCORE } from '../../constants/app';
 import { C10 } from '../../constants/colors';
 import Label from '../common/Label';
 import WrappedText from '../common/WrappedText';
-import {
-  HealthRecord,
-  RecordSymptom,
-  SeverityLevel,
-  ValueSeverityLevel
-} from './state/types';
+import { HealthRecord, RecordSymptom, SeverityLevel, ValueSeverityLevel } from './state/types';
 
 interface Props {
   record: HealthRecord;
   symptoms: APISymptom[];
 }
 
-const NON_SEVERITY_LEVELS = [SeverityLevel.Unspecified, SeverityLevel.No];
+const NON_SEVERITY_LEVELS = [SeverityLevel.Unspecified];
 
 function hasSeverity(
   s: RecordSymptom<SeverityLevel>
