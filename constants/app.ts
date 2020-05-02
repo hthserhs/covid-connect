@@ -1,11 +1,7 @@
 import { TagItem } from '../components/common/types';
-import {
-  SeverityLevel,
-  TransportMode,
-  ValueSeverityLevel
-} from '../components/records/state/types';
+import { SeverityLevel, TransportMode, ValueSeverityLevel } from '../components/records/state/types';
 import { TextKey } from '../util/translation';
-import { C1, C2, C3, C4, C5 } from './colors';
+import { C1, C2, C3, C4, C5, C9 } from './colors';
 
 export const WEEK = 7 * 24 * 60 * 60 * 1000;
 
@@ -24,6 +20,7 @@ export const SEV_LEVEL_TEXTS = {
 };
 
 export const SEV_LEVEL_COLORS = {
+  [SeverityLevel.Unspecified]: C9,
   [SeverityLevel.No]: C2,
   [SeverityLevel.Low]: C3,
   [SeverityLevel.Mild]: C4,
@@ -31,6 +28,7 @@ export const SEV_LEVEL_COLORS = {
 };
 
 export const SEV_LEVEL_ORDER: ValueSeverityLevel[] = [
+  SeverityLevel.No,
   SeverityLevel.Low,
   SeverityLevel.Mild,
   SeverityLevel.High

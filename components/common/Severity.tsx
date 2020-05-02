@@ -11,18 +11,22 @@ interface Props {
   levels: SeverityLevelItem[];
   current: number; // -1 if nothing selected
   onChange: (index: number) => void;
+  isDisabled: boolean
 }
 
-const Severity: FC<Props> = ({ levels, current, onChange }) => {
+const Severity: FC<Props> = ({ levels, current, onChange, isDisabled }) => {
+  let count = 0;
   return (
     <View style={{ flexDirection: 'row' }}>
       {levels.map(({ text, color: c }, index) => {
         const bgColor = color(c);
         bgColor.opacity = index === current ? 1 : 0.1;
-
-        return (
+        let severityTile = null;
+        if(text !== "No"){
+          severityTile = 
           <TouchableOpacity
             key={index}
+            disabled={isDisabled}
             onPress={() => onChange(current === index ? -1 : index)}
           >
             <View
@@ -30,8 +34,8 @@ const Severity: FC<Props> = ({ levels, current, onChange }) => {
                 backgroundColor: bgColor.toString(),
                 paddingVertical: 12,
                 paddingHorizontal: 30,
-                borderTopLeftRadius: index === 0 ? BORDER_RADIUS : 0,
-                borderBottomLeftRadius: index === 0 ? BORDER_RADIUS : 0,
+                borderTopLeftRadius: index === 1 ? BORDER_RADIUS : 0,
+                borderBottomLeftRadius: index === 1 ? BORDER_RADIUS : 0,
                 borderTopRightRadius:
                   index === levels.length - 1 ? BORDER_RADIUS : 0,
                 borderBottomRightRadius:
@@ -41,7 +45,8 @@ const Severity: FC<Props> = ({ levels, current, onChange }) => {
               <WrappedText>{text}</WrappedText>
             </View>
           </TouchableOpacity>
-        );
+        }
+        return severityTile;
       })}
     </View>
   );
